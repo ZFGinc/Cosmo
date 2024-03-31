@@ -3,7 +3,8 @@
 [RequireComponent(typeof(Rigidbody))]
 public class PickableObject : MonoBehaviour, IPickable
 {
-    private bool _isHold = false;
+    public bool IsHold { get; private set; } = false;
+
     private float _speedMove = 5f;
     private float _speedRotation = 300f;
     private Rigidbody _rigidBody;
@@ -15,9 +16,9 @@ public class PickableObject : MonoBehaviour, IPickable
 
     private void FixedUpdate()
     {
-        ControllRigidBody(_isHold);
+        ControllRigidBody(IsHold);
 
-        if (!_isHold) return;
+        if (!IsHold) return;
 
         MoveToParent();
         RotateToParent();
@@ -41,13 +42,13 @@ public class PickableObject : MonoBehaviour, IPickable
 
     public void SetParent(Transform parent)
     {
-        _isHold = false;
+        IsHold = false;
 
         this.gameObject.transform.parent = parent;
 
         if (parent == null) return;
 
-        _isHold = true; 
+        IsHold = true; 
     }
 }
 
