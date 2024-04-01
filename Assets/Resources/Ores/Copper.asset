@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d5b82db0df4e8244b9b264476d31d2a, type: 3}
   m_Name: Copper
   m_EditorClassIdentifier: 
-  <Type>k__BackingField: 2
+  <Type>k__BackingField: 4
   <Model>k__BackingField: {fileID: 0}

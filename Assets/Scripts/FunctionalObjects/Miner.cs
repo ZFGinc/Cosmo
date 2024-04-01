@@ -1,19 +1,26 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(PickableObject))]
-public class Miner : MonoBehaviour
+public abstract class Miner : MonoBehaviour
 {
-    [SerializeField] private float _countOreMined = 0;
+    public abstract event Action<MinerInfoView> OnMined;
+
     [SerializeField] private MineInfo _info;
-    [SerializeField] private Transform _productionAreaPivot;
+    [SerializeField] private bool _isMined;
+    [SerializeField] private uint _currentProductCount;
+    [SerializeField] private ProductType _productType = ProductType.Null;
 
     private PickableObject _thisPickableObject;
-    private bool _isMined;
-    private float _countOres = 0;
-    private TypeOre _typeOre = TypeOre.Null;
+    
+    public MineInfo Info => _info;
+    public PickableObject ThisPickableObject => _thisPickableObject;
+
+    public bool IsMined { get => _isMined; protected set { _isMined = value; } }
+    public uint CurrentProductCount { get => _currentProductCount; protected set { _currentProductCount = value; } }
+    public uint MaximumProductCount { get => _info.MaxProductCount; }
+    public ProductType ProductType { get => _productType; protected set { _productType = value; } }
 
     private void Awake()
     {
@@ -23,75 +30,40 @@ public class Miner : MonoBehaviour
     private void FixedUpdate()
     {
         if(_thisPickableObject.IsHold) TryStopMine();
-        else TryStartMine();
-    }
+        else if (_currentProductCount < _info.MaxProductCount) TryStartMine();
 
-    private void GetOre()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(_productionAreaPivot.position, _info.RadiusMine);
-        Dictionary<TypeOre, int> countOres = new Dictionary<TypeOre, int>();
-
-        foreach (Collider collider in hitColliders)
+        if(_currentProductCount > _info.MaxProductCount)
         {
-            if (collider.gameObject.TryGetComponent(out Ore ore))
-            {
-                TypeOre type = ore.GetTypeOre();
-
-                if(countOres.ContainsKey(type)) countOres[type]++;
-                else countOres.Add(type, 1);
-            }
-        }
-
-        if (countOres.Count > 0)
-        {
-            var maxOres = countOres.Aggregate((x, y) => x.Value > y.Value ? x : y);
-            _countOres = maxOres.Value;
-            _typeOre = maxOres.Key;
-        }
-        else
-        {
-            _countOres = 0;
-            _typeOre = TypeOre.Null;
+            TryStopMine();
+            _currentProductCount = _info.MaxProductCount;
         }
     }
 
-    private void TryStartMine()
+    public MinerInfoView InfoView => new MinerInfoView()
     {
-        if(_isMined) return;
+        NameMiner = Info.Name,
+        LevelMiner = Info.Level,
+        CurrentProductCount = _currentProductCount,
+        MaximumProductCount = MaximumProductCount,
+        ProductType = this.ProductType
+    };
 
-        GetOre();
+    public bool IsHasProductCopacity()
+    {
+        if (CurrentProductCount >= Info.MaxProductCount) return false;
 
-        if (_countOres == 0 || _typeOre == TypeOre.Null) return;
-
-        StartMine();
+        return true;
     }
 
-    private void TryStopMine() 
-    {
-        if (!_isMined) return;
-        StopMine();
-    }
+    public abstract void TryStartMine();
 
-    private void StartMine()
-    {
-        _isMined = true;
-        StartCoroutine(Mine(_info.SpeedMine, _countOres));
-    }
+    public abstract void TryStopMine();
 
-    private void StopMine()
-    {
-        _isMined = false;
-        StopCoroutine(Mine(_info.SpeedMine, _countOres));
-    }
+    public abstract void StartMine();
 
-    private IEnumerator Mine(float countPerMinute, float countOres)
-    {
-        float time = 60 / countPerMinute; //value per minute
+    public abstract void StopMine();
 
-        while (_isMined)
-        {
-            yield return new WaitForSeconds(time);
-            _countOreMined += countOres;
-        }
-    }
+    public abstract IEnumerator Mine(uint countPerMinute);
+
+    public abstract IEnumerator Mine(uint countPerMinute, uint countOres);
 }
