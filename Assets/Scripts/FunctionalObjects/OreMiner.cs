@@ -5,15 +5,18 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(PickableObject))]
-public class OreMiner : Miner, IElectricity
+public class OreMiner : Miner
 {
     [SerializeField] private Transform _productionAreaPivot;
-    private uint _countOres = 0;
-
-    public uint Electricity { get; private set; }
-    public uint ElectricityCopacity { get; private set; }
 
     public override event Action<MinerInfoView> OnMined;
+
+    private uint _countOres = 0;
+
+    private void Start()
+    {
+        OnMined?.Invoke(InfoView);
+    }
 
     private void GetOre()
     {
@@ -48,7 +51,7 @@ public class OreMiner : Miner, IElectricity
     {
         if (IsMined) return;
         if (!IsHasProductCopacity()) return;
-        if (Electricity == 0) return;
+        if (!IsHaveElectricity) return;
 
         GetOre();
 
@@ -79,11 +82,11 @@ public class OreMiner : Miner, IElectricity
     {
         float time = 60 / countPerMinute; //value per minute
 
-        while (IsMined && Electricity>0 && IsHasProductCopacity())
+        while (IsMined && IsHaveElectricity && IsHasProductCopacity())
         {
             yield return new WaitForSeconds(time);
             CurrentProductCount += countOres;
-            Electricity--;
+            TryUsageElectricity(1);
 
             if (!IsHasProductCopacity())
             {
@@ -97,14 +100,5 @@ public class OreMiner : Miner, IElectricity
     public override IEnumerator Mine(uint countPerMinute)
     {
         yield return null;
-    }
-
-    public bool TryApplyElectricity(uint value)
-    {
-        if (Electricity == ElectricityCopacity) return false;
-        if (Electricity + value > ElectricityCopacity) return false;
-
-        Electricity += value;
-        return true;
     }
 }

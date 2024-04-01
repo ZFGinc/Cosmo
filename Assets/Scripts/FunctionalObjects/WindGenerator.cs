@@ -1,76 +1,45 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(PickableObject))]
-public class WindGenerator : Miner, IElectricity
+public class WindGenerator : Miner
 {
     [SerializeField] private Transform _rotationVisualMined;
     [SerializeField] private Vector3 _vectorRotationVisual;
-    [SerializeField] private LineRenderer _wireless;
-
-    public uint Electricity { get => CurrentProductCount; private set { CurrentProductCount += value; } }
-    public uint ElectricityCopacity { get => Info.MaxProductCount; }
+    [SerializeField] private LineRenderer _wire;
 
     public override event Action<MinerInfoView> OnMined;
+    
+    private List<WireConnections> _connections;
+    private bool _isWireConnected = false;
 
-    private List<IElectricity> _connectionsElectricity = new List<IElectricity>();
-
-    private void Awake()
+    private void Start()
     {
-        StartCoroutine(DistributionOfElectricity());
+        OnMined?.Invoke(InfoView);
     }
 
-    private void Update()
+    private void LateUpdate()
     {
-        if (IsMined && IsHasProductCopacity())
+        if (ThisPickableObject.IsHold)
         {
+            _wire.positionCount = 0;
+            _isWireConnected = false;
+        }
+
+        if (IsMined && IsHasProductCopacity()) 
             _rotationVisualMined.Rotate(_vectorRotationVisual);
-        }
 
-        if(!IsMined && !ThisPickableObject.IsHold)
-        {
-            GetConnectionsElectricity();
-        }
+        if(!isActiveAndEnabled) 
+            GetWireConnections();
     }
 
-    private void GetConnectionsElectricity()
+    private void GetWireConnections()
     {
-        _connectionsElectricity = new List<IElectricity>();
+        _connections = new List<WireConnections>();
 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, Info.RadiusMine);
-
-        foreach (Collider collider in hitColliders)
-        {
-            if (collider.gameObject.TryGetComponent(out IElectricity connection))
-            {
-                _connectionsElectricity.Add(connection);
-            }
-        }
-
-        _wireless.positionCount = _connectionsElectricity.Count;
-
-        foreach(IElectricity connection in _connectionsElectricity)
-        {
-
-        }
-    }
-
-    private IEnumerator DistributionOfElectricity()
-    {
-        while (true)
-        {
-            foreach(IElectricity connection in _connectionsElectricity)
-            {
-                if (Electricity == 0) break;
-                connection.TryApplyElectricity(1);
-                Electricity--;
-            }
-
-            yield return new WaitForSeconds(1f);
-        }
+        _isWireConnected = true;
     }
 
     public override void TryStartMine()
@@ -104,6 +73,11 @@ public class WindGenerator : Miner, IElectricity
         yield return null;
     }
 
+    public override bool IsHasProductCopacity()
+    {
+        return IsElectricityFull;
+    }
+
     public override IEnumerator Mine(uint countPerMinute)
     {
         float time = 60 / countPerMinute; //value per minute
@@ -120,14 +94,5 @@ public class WindGenerator : Miner, IElectricity
 
             OnMined?.Invoke(InfoView);
         }
-    }
-
-    public bool TryApplyElectricity(uint value)
-    {
-        if (Electricity == ElectricityCopacity) return false;
-        if (Electricity + value > ElectricityCopacity) return false;
-
-        Electricity += value;
-        return true;
     }
 }

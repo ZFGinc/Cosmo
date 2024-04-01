@@ -3,11 +3,12 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(PickableObject))]
-public abstract class Miner : MonoBehaviour
+public abstract class Miner : ElectricityConsumer
 {
     public abstract event Action<MinerInfoView> OnMined;
 
     [SerializeField] private MineInfo _info;
+    [Space] 
     [SerializeField] private bool _isMined;
     [SerializeField] private uint _currentProductCount;
     [SerializeField] private ProductType _productType = ProductType.Null;
@@ -22,7 +23,7 @@ public abstract class Miner : MonoBehaviour
     public uint MaximumProductCount { get => _info.MaxProductCount; }
     public ProductType ProductType { get => _productType; protected set { _productType = value; } }
 
-    private void Awake()
+    private void Start()
     {
         _thisPickableObject = GetComponent<PickableObject>();
     }
@@ -30,7 +31,7 @@ public abstract class Miner : MonoBehaviour
     private void FixedUpdate()
     {
         if(_thisPickableObject.IsHold) TryStopMine();
-        else if (_currentProductCount < _info.MaxProductCount) TryStartMine();
+        else TryStartMine();
 
         if(_currentProductCount > _info.MaxProductCount)
         {
@@ -48,7 +49,7 @@ public abstract class Miner : MonoBehaviour
         ProductType = this.ProductType
     };
 
-    public bool IsHasProductCopacity()
+    public virtual bool IsHasProductCopacity()
     {
         if (CurrentProductCount >= Info.MaxProductCount) return false;
 

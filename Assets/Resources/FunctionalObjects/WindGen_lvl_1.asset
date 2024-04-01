@@ -15,5 +15,5 @@ MonoBehaviour:
   <Name>k__BackingField: Simple wind generator
   <Level>k__BackingField: 1
   <MaxProductCount>k__BackingField: 10
-  <SpeedMine>k__BackingField: 30
-  <RadiusMine>k__BackingField: 1
+  <SpeedMine>k__BackingField: 60
+  <RadiusMine>k__BackingField: 10
