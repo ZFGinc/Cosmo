@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(PickableObject))]
 public abstract class Miner : ElectricityConsumer
@@ -8,7 +9,9 @@ public abstract class Miner : ElectricityConsumer
     public abstract event Action<MinerInfoView> OnMined;
 
     [SerializeField] private MineInfo _info;
-    [Space] 
+    [Space]
+    [SerializeField] DecalProjector _decalProjector;
+    [Space]
     [SerializeField] private bool _isMined;
     [SerializeField] private uint _currentProductCount;
     [SerializeField] private ProductType _productType = ProductType.Null;
@@ -23,9 +26,12 @@ public abstract class Miner : ElectricityConsumer
     public uint MaximumProductCount { get => _info.MaxProductCount; }
     public ProductType ProductType { get => _productType; protected set { _productType = value; } }
 
-    private void Start()
+    private void Awake()
     {
         _thisPickableObject = GetComponent<PickableObject>();
+
+        float diametr = Info.RadiusMine * 2;
+        _decalProjector.size = new Vector3(diametr, diametr, 50);
     }
 
     private void FixedUpdate()
@@ -38,6 +44,8 @@ public abstract class Miner : ElectricityConsumer
             TryStopMine();
             _currentProductCount = _info.MaxProductCount;
         }
+
+        _decalProjector.transform.rotation = Quaternion.Euler(new Vector3(90,0,0));
     }
 
     public MinerInfoView InfoView => new MinerInfoView()

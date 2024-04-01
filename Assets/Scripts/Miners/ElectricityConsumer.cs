@@ -6,7 +6,7 @@ public class ElectricityConsumer : MonoBehaviour, IConsumer
     private uint _electricityCopacity;
 
     protected bool IsHaveElectricity => _electricity > 0;
-    protected bool IsElectricityFull => _electricity == _electricityCopacity;
+    protected bool IsElectricityFull => _electricity >= _electricityCopacity;
 
     protected bool TryUsageElectricity(uint value)
     {

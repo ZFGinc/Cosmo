@@ -12,12 +12,14 @@ public class WindGenerator : Miner
 
     public override event Action<MinerInfoView> OnMined;
     
-    private List<WireConnections> _connections;
+    private List<WireConnections> _connections = new List<WireConnections>();
     private bool _isWireConnected = false;
 
     private void Start()
     {
         OnMined?.Invoke(InfoView);
+
+        StartCoroutine(EnergyDistribution());
     }
 
     private void LateUpdate()
@@ -31,7 +33,7 @@ public class WindGenerator : Miner
         if (IsMined && IsHasProductCopacity()) 
             _rotationVisualMined.Rotate(_vectorRotationVisual);
 
-        if(!isActiveAndEnabled) 
+        if(!_isWireConnected) 
             GetWireConnections();
     }
 
@@ -39,7 +41,57 @@ public class WindGenerator : Miner
     {
         _connections = new List<WireConnections>();
 
+        //
+        //find consumers 0~~~~
+        //
+
+        ViewWireConnections();
+
         _isWireConnected = true;
+    }
+
+    private void ViewWireConnections()
+    {
+        int index = 0;
+        _wire.positionCount = 1;
+        _wire.SetPosition(index, transform.position);
+
+        foreach(WireConnections wire in _connections)
+        {
+            for(int j = 0; j < wire.ConnectionOrderList.Count; j++)
+            {
+                index++;
+                AddWirePosition(index, wire.ConnectionOrderList[j]);
+            }
+
+            for (int j = wire.ConnectionOrderList.Count-1; j >= 0; j--)
+            {
+                index++;
+                AddWirePosition(index, wire.ConnectionOrderList[j]);
+            }
+        }
+    }
+
+    private void AddWirePosition(int index, Vector3 position)
+    {
+        _wire.positionCount++;
+        _wire.SetPosition(index, position);
+    }
+
+    private IEnumerator EnergyDistribution()
+    {
+        while (true)
+        {
+            foreach (var connection in _connections)
+            {
+                if (!IsHaveElectricity) continue;
+
+                bool result = connection.Consumer.TryApplyElectricity(1);
+                if (result) CurrentProductCount--;
+            }
+
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     public override void TryStartMine()
@@ -71,11 +123,6 @@ public class WindGenerator : Miner
     public override IEnumerator Mine(uint countPerMinute, uint countOres)
     {
         yield return null;
-    }
-
-    public override bool IsHasProductCopacity()
-    {
-        return IsElectricityFull;
     }
 
     public override IEnumerator Mine(uint countPerMinute)
