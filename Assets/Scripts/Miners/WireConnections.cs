@@ -3,7 +3,7 @@ using UnityEngine;
 
 public struct WireConnections
 {
-    public List<Vector3> ConnectionOrderList;
-    public IConsumer Consumer;
+    public HashSet<RackPower> Connections;
+    public HashSet<IConsumer> Consumers;
 }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(PickableObject))]
-public abstract class Miner : ElectricityConsumer
+public abstract class Miner : ElectricityConsumer, IElectricalConnect
 {
     public abstract event Action<MinerInfoView> OnMined;
 
@@ -17,7 +17,8 @@ public abstract class Miner : ElectricityConsumer
     [SerializeField] private ProductType _productType = ProductType.Null;
 
     private PickableObject _thisPickableObject;
-    
+    private bool _isGetConsumers = false;
+
     public MineInfo Info => _info;
     public PickableObject ThisPickableObject => _thisPickableObject;
 
@@ -26,17 +27,17 @@ public abstract class Miner : ElectricityConsumer
     public uint MaximumProductCount { get => _info.MaxProductCount; }
     public ProductType ProductType { get => _productType; protected set { _productType = value; } }
 
-    private void Awake()
+    protected void Awake()
     {
         _thisPickableObject = GetComponent<PickableObject>();
 
         float diametr = Info.RadiusMine * 2;
-        _decalProjector.size = new Vector3(diametr, diametr, 50);
+        _decalProjector.size = new Vector3(diametr, diametr, 10);
     }
 
-    private void FixedUpdate()
+    protected void FixedUpdate()
     {
-        if(_thisPickableObject.IsHold) TryStopMine();
+        if (_thisPickableObject.IsHold) TryStopMine();
         else TryStartMine();
 
         if(_currentProductCount > _info.MaxProductCount)
@@ -46,6 +47,18 @@ public abstract class Miner : ElectricityConsumer
         }
 
         _decalProjector.transform.rotation = Quaternion.Euler(new Vector3(90,0,0));
+        
+        if (ThisPickableObject.IsHold)
+        {
+            _isGetConsumers = false;
+            return;
+        }
+
+        if (!_isGetConsumers)
+        {
+            ElectricalCircuit.Instance.UpdateWireConnections();
+            _isGetConsumers = true;
+        }
     }
 
     public MinerInfoView InfoView => new MinerInfoView()
@@ -75,4 +88,9 @@ public abstract class Miner : ElectricityConsumer
     public abstract IEnumerator Mine(uint countPerMinute);
 
     public abstract IEnumerator Mine(uint countPerMinute, uint countOres);
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
 }

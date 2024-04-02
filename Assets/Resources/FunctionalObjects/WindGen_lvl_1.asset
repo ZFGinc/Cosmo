@@ -16,4 +16,4 @@ MonoBehaviour:
   <Level>k__BackingField: 1
   <MaxProductCount>k__BackingField: 10
   <SpeedMine>k__BackingField: 60
-  <RadiusMine>k__BackingField: 10
+  <RadiusMine>k__BackingField: 5

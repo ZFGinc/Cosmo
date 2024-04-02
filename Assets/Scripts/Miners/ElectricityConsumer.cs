@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class ElectricityConsumer : MonoBehaviour, IConsumer
 {
+    [SerializeField] private uint _electricityCopacity;
     private uint _electricity;
-    private uint _electricityCopacity;
 
     protected bool IsHaveElectricity => _electricity > 0;
     protected bool IsElectricityFull => _electricity >= _electricityCopacity;
