@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PickableObject))]
-public class ElecticGenerator : Miner
+public class ElecticGenerator : Miner, IElectricalGenerator
 {
     public override event Action<MinerInfoView> OnMined;
     
-    protected HashSet<IConsumer> _connections = new HashSet<IConsumer>();
+    protected List<IConsumer> _connections = new();
 
     private bool _isGetConsumers = false;
 
@@ -99,5 +99,10 @@ public class ElecticGenerator : Miner
 
             OnMined?.Invoke(InfoView);
         }
+    }
+
+    public ElecticGenerator GetElectricalGeneratorType()
+    {
+        return this;
     }
 }

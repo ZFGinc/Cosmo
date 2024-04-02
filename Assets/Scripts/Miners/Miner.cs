@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(PickableObject))]
-public abstract class Miner : ElectricityConsumer, IElectricalConnect
+public abstract class Miner : ElectricityConsumer
 {
     public abstract event Action<MinerInfoView> OnMined;
 
@@ -17,7 +17,7 @@ public abstract class Miner : ElectricityConsumer, IElectricalConnect
     [SerializeField] private ProductType _productType = ProductType.Null;
 
     private PickableObject _thisPickableObject;
-    private bool _isGetConsumers = false;
+    private bool _isGetConsumers = true;
 
     public MineInfo Info => _info;
     public PickableObject ThisPickableObject => _thisPickableObject;
@@ -88,9 +88,4 @@ public abstract class Miner : ElectricityConsumer, IElectricalConnect
     public abstract IEnumerator Mine(uint countPerMinute);
 
     public abstract IEnumerator Mine(uint countPerMinute, uint countOres);
-
-    public Vector3 GetPosition()
-    {
-        return transform.position;
-    }
 }

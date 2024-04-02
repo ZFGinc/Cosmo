@@ -1,6 +1,7 @@
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
-public class ElectricityConsumer : MonoBehaviour, IConsumer
+public class ElectricityConsumer : MonoBehaviour, IConsumer, IElectricalConnect
 {
     [SerializeField] private uint _electricityCopacity;
     private uint _electricity;
@@ -17,7 +18,6 @@ public class ElectricityConsumer : MonoBehaviour, IConsumer
         return true;
     }
 
-
     public bool TryApplyElectricity(uint value)
     {
         if (IsElectricityFull) return false;
@@ -25,5 +25,15 @@ public class ElectricityConsumer : MonoBehaviour, IConsumer
 
         _electricity += value;
         return true;
+    }
+
+    public IElectricalConnect TryGetIElectricalConnect()
+    {
+        return this;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
     }
 }

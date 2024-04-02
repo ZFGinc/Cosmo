@@ -8,13 +8,9 @@ public class RackPower : MonoBehaviour, IElectricalConnect
     [SerializeField] private DecalProjector _decalProjector;
     [SerializeField] private float _powerRadius = 5f;
 
-    private bool _endFindConsumers = false;
-    private bool _endFindRackPower = false;
-    private bool _isGetConsumers = false;
+    private bool _isGetConsumers = true;
 
     private PickableObject _pickableObject;
-    private HashSet<IConsumer> _consumers = new HashSet<IConsumer>();
-    private HashSet<RackPower> _racksPower = new HashSet<RackPower>();
 
     private void Start()
     {
@@ -30,8 +26,6 @@ public class RackPower : MonoBehaviour, IElectricalConnect
 
         if (_pickableObject.IsHold)
         {
-            _endFindConsumers = false;
-            _endFindRackPower = false;
             _isGetConsumers = false;
 
             return;
@@ -42,34 +36,37 @@ public class RackPower : MonoBehaviour, IElectricalConnect
             ElectricalCircuit.Instance.UpdateWireConnections();
             _isGetConsumers = true;
         }
-
-        if (!_endFindConsumers) GetConnectionsConsumers();
-        if (!_endFindRackPower) GetRacksPower();
     }
 
-    private void GetConnectionsConsumers()
+    private void OnDrawGizmosSelected()
     {
-        _consumers = new HashSet<IConsumer>();
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, _powerRadius);
+    }
+
+    private void GetConnectionsConsumers(out List<IConsumer> list)
+    {
+        List<IConsumer> consumers = new();
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _powerRadius);
 
         foreach (Collider collider in hitColliders)
         {
-            if (collider.gameObject.TryGetComponent(out IConsumer connection))
+            if (collider.gameObject.TryGetComponent(out IConsumer connection) && !collider.gameObject.TryGetComponent(out RackPower rackPower))
             {
                 if (connection == this) continue;
                 if (connection.GetType() == typeof(ElecticGenerator)) continue;
 
-                _consumers.Add(connection);
+                consumers.Add(connection);
             }
         }
 
-        _endFindConsumers = true;
+        list = consumers;
     }
 
-    private void GetRacksPower()
+    private void GetRacksPower(out List<RackPower> list)
     {
-        _racksPower = new HashSet<RackPower>();
+        List<RackPower> racksPower = new();
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _powerRadius);
 
@@ -78,26 +75,61 @@ public class RackPower : MonoBehaviour, IElectricalConnect
             if (collider.gameObject.TryGetComponent(out RackPower connection))
             {
                 if (connection == this) continue;
-                _racksPower.Add(connection);
+                racksPower.Add(connection);
             }
         }
 
-        _endFindRackPower = true;
+        list = racksPower;
+    }
+
+    public void GetElectricGenerators(out List<ElecticGenerator> list)
+    {
+        List<ElecticGenerator> generators = new();
+
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, _powerRadius);
+
+        foreach (Collider collider in hitColliders)
+        {
+            if (collider.gameObject.TryGetComponent(out IElectricalGenerator connection))
+            {
+                if (connection == this) continue;
+                generators.Add(connection.GetElectricalGeneratorType());
+            }
+        }
+
+        list = generators;
     }
 
     public WireConnections GetWireConnections()
     {
         if (_pickableObject.IsHold) return new WireConnections();
 
+        List<IConsumer> consumers = new List<IConsumer>();
+        List<RackPower> racksPower = new List<RackPower>();
+
+        GetConnectionsConsumers(out consumers);
+        GetRacksPower(out  racksPower);
+
         return new WireConnections()
         {
-            Connections = _racksPower,
-            Consumers = _consumers
+            This = this,
+            Connections = racksPower,
+            Consumers = consumers
         };
     }
 
     public Vector3 GetPosition()
     {
         return transform.position;
+    }
+
+    public bool TryApplyElectricity(uint value)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public IElectricalConnect TryGetIElectricalConnect()
+    {
+        return this;
     }
 }
