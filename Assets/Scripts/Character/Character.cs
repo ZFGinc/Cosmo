@@ -84,6 +84,6 @@ public class Character : MonoBehaviour, IControllable
 
     public void Action()
     {
-        Debug.Log("Action button pressed!");
+
     }
 }

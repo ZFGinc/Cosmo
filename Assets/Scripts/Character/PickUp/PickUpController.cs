@@ -3,14 +3,28 @@
 public class PickUpController: MonoBehaviour
 {
     [SerializeField] private Transform _pickUpCheckerPivot;
+    [SerializeField] private float _pickUpRadius = 0.2f;
+    [SerializeField] private float _pushForce = 2f;
 
     private IPickable _pickableObject;
-    private float _pickUpRadius = 0.2f;
 
     public void TryPickUpObject()
     {
         if (_pickableObject != null) DropObject();
         else PickUpObject();
+    }
+
+    public void TryPushObject(Vector3 direction)
+    {
+        if (_pickableObject == null) return;
+
+        
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(_pickUpCheckerPivot.position, _pickUpRadius);
     }
 
     private void DropObject()

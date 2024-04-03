@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Follower : MonoBehaviour
@@ -14,4 +12,6 @@ public abstract class Follower : MonoBehaviour
 
         transform.position = nextPosition;
     }
+
+    public Transform GetTarget() { return _target; }
 }
