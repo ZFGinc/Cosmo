@@ -297,4 +297,3 @@ public class ElectricalCircuit : MonoBehaviour
         return new HashSet<IConsumer>() { };
     }
 }
-

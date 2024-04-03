@@ -23,21 +23,7 @@ public class RackPower : MonoBehaviour
     private void Update()
     {
         _decalProjector.transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
-
-        //if (_pickableObject.IsHold)
-        //{
-        //    if(_isGetConsumers) ElectricalCircuit.Instance.UpdateWireConnections();
-
-        //    _isGetConsumers = false;
-
-        //    return;
-        //}
-
-        //if (!_isGetConsumers)
-        //{
-        //    ElectricalCircuit.Instance.UpdateWireConnections();
-        //    _isGetConsumers = true;
-        //}
+        _decalProjector.gameObject.SetActive(_pickableObject.IsHold);
     }
 
     private void OnDrawGizmosSelected()

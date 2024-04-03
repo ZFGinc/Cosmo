@@ -49,20 +49,7 @@ public abstract class Miner : ElectricityConsumer
 
         _decalProjector.transform.rotation = Quaternion.Euler(new Vector3(90,0,0));
 
-        //if (ThisPickableObject.IsHold)
-        //{
-        //    if (_isGetConsumers) ElectricalCircuit.Instance.UpdateWireConnections();
-
-        //    _isGetConsumers = false;
-
-        //    return;
-        //}
-
-        //if (!_isGetConsumers)
-        //{
-        //    ElectricalCircuit.Instance.UpdateWireConnections();
-        //    _isGetConsumers = true;
-        //}
+        _decalProjector.gameObject.SetActive(ThisPickableObject.IsHold);
     }
 
     public virtual MinerInfoView InfoView => new MinerInfoView()
