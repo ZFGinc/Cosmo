@@ -10,14 +10,13 @@ public abstract class Miner : ElectricityConsumer
 
     [SerializeField] private MineInfo _info;
     [Space]
-    [SerializeField] DecalProjector _decalProjector;
+    [SerializeField] protected DecalProjector _decalProjector;
     [Space]
     [SerializeField] private bool _isMined;
     [SerializeField] private uint _currentProductCount;
     [SerializeField] private ProductType _productType = ProductType.Null;
 
     private PickableObject _thisPickableObject;
-    private bool _isGetConsumers = true;
 
     public MineInfo Info => _info;
     public PickableObject ThisPickableObject => _thisPickableObject;
@@ -30,6 +29,8 @@ public abstract class Miner : ElectricityConsumer
     protected void Awake()
     {
         _thisPickableObject = GetComponent<PickableObject>();
+
+        if (_decalProjector == null) return;
 
         float diametr = Info.RadiusMine * 2;
         _decalProjector.size = new Vector3(diametr, diametr, 10);
@@ -47,21 +48,24 @@ public abstract class Miner : ElectricityConsumer
         }
 
         _decalProjector.transform.rotation = Quaternion.Euler(new Vector3(90,0,0));
-        
-        if (ThisPickableObject.IsHold)
-        {
-            _isGetConsumers = false;
-            return;
-        }
 
-        if (!_isGetConsumers)
-        {
-            ElectricalCircuit.Instance.UpdateWireConnections();
-            _isGetConsumers = true;
-        }
+        //if (ThisPickableObject.IsHold)
+        //{
+        //    if (_isGetConsumers) ElectricalCircuit.Instance.UpdateWireConnections();
+
+        //    _isGetConsumers = false;
+
+        //    return;
+        //}
+
+        //if (!_isGetConsumers)
+        //{
+        //    ElectricalCircuit.Instance.UpdateWireConnections();
+        //    _isGetConsumers = true;
+        //}
     }
 
-    public MinerInfoView InfoView => new MinerInfoView()
+    public virtual MinerInfoView InfoView => new MinerInfoView()
     {
         NameMiner = Info.Name,
         LevelMiner = Info.Level,

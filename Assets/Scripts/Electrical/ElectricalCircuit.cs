@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ElectricalCircuit : MonoBehaviour
@@ -14,9 +15,11 @@ public class ElectricalCircuit : MonoBehaviour
     private List<WireConnections> _cacheConnections = new();
     private List<ElecticGenerator> _cacheElectricGenerators = new();
 
-    private List<Tuple<IElectricalConnect, IElectricalConnect>> _startEdges = new();
-    private List<Tuple<IElectricalConnect, IElectricalConnect>> _rackEdges = new();
-    private Dictionary<IElectricalConnect, List<IConsumer>> _cacheConsumersForElectricGenerators = new();
+    private List<Tuple<ElecticGenerator, RackPower>> _startEdges = new();
+    private List<Tuple<RackPower, RackPower>> _rackEdges = new();
+    private List<Tuple<RackPower, IConsumer>> _endEdges = new();
+
+    private Dictionary<ElecticGenerator, HashSet<IConsumer>> _cacheConsumersForElectricGenerators = new();
 
     public static ElectricalCircuit Instance;
 
@@ -26,19 +29,17 @@ public class ElectricalCircuit : MonoBehaviour
         else Destroy(this.gameObject);
     }
 
-    public void UpdateWireConnections()
+    private void FixedUpdate()
     {
-        CacheWireConnections();
-        CalculateEdges();
-        CorrectEdges();
-        ShowWires();
+        UpdateWireConnections();
     }
-
 
     private void CacheWireConnections()
     {
+        _cacheElectricGenerators.Clear();
+        _cacheConnections.Clear();
+
         var racksPower = FindObjectsByType<RackPower>(FindObjectsSortMode.InstanceID).ToList();
-        _cacheElectricGenerators = new();
 
         foreach (var rack in racksPower)
         {
@@ -55,6 +56,7 @@ public class ElectricalCircuit : MonoBehaviour
     {
         _startEdges.Clear();
         _rackEdges.Clear();
+        _endEdges.Clear();
 
         CalculateStartEdges();
         CalculateRackEdges();
@@ -85,7 +87,7 @@ public class ElectricalCircuit : MonoBehaviour
                 if (isElectricGenerator)
                 {
                     connection.Consumers.Remove(consumer);
-                    _startEdges.Add(new Tuple<IElectricalConnect, IElectricalConnect>(_cacheElectricGenerators[index], connection.This));
+                    _startEdges.Add(new Tuple<ElecticGenerator, RackPower>(_cacheElectricGenerators[index], connection.This));
                     i--;
                 }
 
@@ -93,7 +95,7 @@ public class ElectricalCircuit : MonoBehaviour
                 else
                 {
                     if (consumer.GetType() == typeof(RackPower)) continue;
-                    _rackEdges.Add(new Tuple<IElectricalConnect, IElectricalConnect>(connection.This, consumer.TryGetIElectricalConnect()));
+                    _endEdges.Add(new Tuple<RackPower, IConsumer>(connection.This, consumer));
                 }
             }
         }
@@ -106,47 +108,37 @@ public class ElectricalCircuit : MonoBehaviour
             for (int i = 0; i < connection.Connections.Count; i++)
             {
                 RackPower rack = connection.Connections[i];
-                Tuple<IElectricalConnect, IElectricalConnect> edge;
+                Tuple<RackPower, RackPower> edge;
 
                 //edge(b;a)
                 if (rack.GetWireConnections().Connections.Contains(connection.This))
                 {
                     rack.GetWireConnections().Connections.Remove(connection.This);
                     connection.Connections.Remove(rack);
-                    edge = new Tuple<IElectricalConnect, IElectricalConnect>(rack, connection.This);
+                    edge = new Tuple<RackPower, RackPower>(rack, connection.This);
                 }
                 //edge(a;b)
                 else
                 {
                     connection.Connections.Remove(rack);
-                    edge = new Tuple<IElectricalConnect, IElectricalConnect>(connection.This, rack);
+                    edge = new Tuple<RackPower, RackPower>(connection.This, rack);
                 }
                 i--;
-                TryAddRackEdge(edge);
+                _rackEdges.Add(edge);
             }
         }
     }
 
-    private void TryAddRackEdge(Tuple<IElectricalConnect, IElectricalConnect> edge = null)
+    private void CorrectRackEdges()
     {
-        if (edge == null) return;
-
-        for(int i = 0; i < _rackEdges.Count; i++)
-        {
-            if (_rackEdges[i].Item2 == edge.Item2) return;
-        }
-        _rackEdges.Add(edge);
-    }
-
-    private void CorrectEdges()
-    {
-        int countMaxFindParent = 2;
+        int maxTryingFindParent = 3;
+        int currnetTrying = maxTryingFindParent;
 
         for (int i = 0; i < _rackEdges.Count; i++)
         {
-            if (countMaxFindParent == 0)
+            if (currnetTrying == 0)
             {
-                countMaxFindParent = 2;
+                currnetTrying = maxTryingFindParent;
                 continue;
             }
 
@@ -173,12 +165,12 @@ public class ElectricalCircuit : MonoBehaviour
 
             if (isHaveParentEdge)
             {
-                countMaxFindParent = 2;
+                currnetTrying = maxTryingFindParent;
                 continue;
             }
 
-            _rackEdges[i] = new Tuple<IElectricalConnect, IElectricalConnect>(_rackEdges[i].Item2, _rackEdges[i].Item1);
-            countMaxFindParent--;
+            _rackEdges[i] = new Tuple<RackPower, RackPower>(_rackEdges[i].Item2, _rackEdges[i].Item1);
+            currnetTrying--;
             i--;
         }
     }
@@ -187,6 +179,31 @@ public class ElectricalCircuit : MonoBehaviour
     {
         ClearWires();
         
+        foreach(var startWire in _startEdges)
+        {
+            InstantiateWire(startWire.Item1.GetPosition(), startWire.Item2.GetPosition());
+        }
+
+        foreach (var rackWire in _rackEdges)
+        {
+            InstantiateWire(rackWire.Item1.GetPosition(), rackWire.Item2.GetPosition());
+        }
+
+        foreach (var endWire in _endEdges)
+        {;
+            InstantiateWire(endWire.Item1.GetPosition(), endWire.Item2.GetPosition());
+        }
+    }
+
+    private void InstantiateWire(Vector3 positionItem1, Vector3 positionItem2)
+    {
+        var currentWire = Instantiate(_prefabWire, Vector3.zero, Quaternion.identity, transform);
+
+        currentWire.positionCount = 2;
+        currentWire.SetPosition(0, positionItem1);
+        currentWire.SetPosition(1, positionItem2);
+
+        _wires.Add(currentWire);
     }
 
     private void ClearWires()
@@ -198,22 +215,86 @@ public class ElectricalCircuit : MonoBehaviour
         {
             if (_wires[i] != null)
             {
-                Destroy(_wires[i]);
+                Destroy(_wires[i].gameObject);
+                _wires.RemoveAt(i);
                 continue;
             }
             i++;
         }
+
         _wires = new List<LineRenderer>();
     }
 
-    public List<IConsumer> GetConsumers(IElectricalConnect miner)
+    private void CacheConsumers()
     {
-        if(!_isConsumersCached) UpdateWireConnections();
+        _cacheConsumersForElectricGenerators.Clear();
 
-        return new List<IConsumer>() { };
+        foreach(var start in _startEdges)
+        {
+            if (_cacheConsumersForElectricGenerators.ContainsKey(start.Item1)) continue;
 
+            _cacheConsumersForElectricGenerators.Add(start.Item1, new HashSet<IConsumer>() { });
+
+            foreach(var end in _endEdges)
+            {
+                if(end.Item1 != start.Item2) continue;
+
+                _cacheConsumersForElectricGenerators[start.Item1].Add(end.Item2);
+            }
+
+            HashSet<IConsumer> list = new();
+            var copyList = new Tuple<RackPower, RackPower>[_rackEdges.Count];
+            var visible = new List<Tuple<RackPower, RackPower>>();
+
+            foreach (var rack in _rackEdges)
+            {
+                if (rack.Item1 != start.Item2) continue;
+
+                _rackEdges.CopyTo(copyList);
+                _cacheConsumersForElectricGenerators[start.Item1].AddRange(GetPath(ref visible, copyList.ToList(), rack));
+            }
+        }
+    }
+
+    private HashSet<IConsumer> GetPath(ref List<Tuple<RackPower, RackPower>> visible, List<Tuple<RackPower, RackPower>> rackEdges, Tuple<RackPower, RackPower> rack)
+    {
+        rackEdges.Remove(rack);
+        visible.Add(rack);
+
+        var copyList = new Tuple<RackPower, RackPower>[rackEdges.Count];
+        var list = new HashSet<IConsumer>();
+        var temp = new List<IConsumer>();
+
+        rack.Item2.GetConnectionsConsumers(out temp);
+        list.AddRange(temp);
+
+        foreach(var edge in rackEdges)
+        {
+            if (edge.Item1 != rack.Item2) continue;
+            if (visible.Contains(edge)) continue;
+
+            rackEdges.CopyTo(copyList);
+            list.AddRange(GetPath(ref visible, copyList.ToList(), edge));
+        }
+
+        return list;
+    }
+
+    private void UpdateWireConnections()
+    {
+        CacheWireConnections();
+        CalculateEdges();
+        CorrectRackEdges();
+        ShowWires();
+        CacheConsumers();
+    }
+
+    public HashSet<IConsumer> GetConsumers(ElecticGenerator miner)
+    {
         if(_cacheConsumersForElectricGenerators.ContainsKey(miner))
             return _cacheConsumersForElectricGenerators[miner];
 
+        return new HashSet<IConsumer>() { };
     }
 }
+

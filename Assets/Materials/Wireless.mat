@@ -163,7 +163,7 @@ Material:
     - _SHADOWS_SOFT: 1
     - _Shadow_Smoothness: 1
     - _Shrink_Size: -0.1
-    - _Smoothness: 0.5
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SpecularMapPower: 0
@@ -191,10 +191,10 @@ Material:
     - _is_Face: 0
     m_Colors:
     - _Ambient: {r: 0.25471696, g: 0.25471696, b: 0.25471696, a: 0}
-    - _BaseColor: {r: 0, g: 1, b: 0.92546487, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 0, a: 1}
     - _BaseMapTiling: {r: 1, g: 1, b: 0, a: 0}
-    - _Color: {r: 0, g: 1, b: 0.92546487, a: 1}
-    - _EmissionColor: {r: 0, g: 17.53229, b: 21.361254, a: 1}
+    - _Color: {r: 1, g: 1, b: 0, a: 1}
+    - _EmissionColor: {r: 14.711052, g: 13.768687, b: 2.9838455, a: 1}
     - _GColor_1: {r: 0, g: 0, b: 0, a: 0}
     - _GColor_2: {r: 0, g: 0, b: 0, a: 0}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}

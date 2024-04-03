@@ -1,16 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(PickableObject))]
-public class ElecticGenerator : Miner, IElectricalGenerator
+public class ElecticGenerator : Miner
 {
     public override event Action<MinerInfoView> OnMined;
     
-    protected List<IConsumer> _connections = new();
+    protected HashSet<IConsumer> _connections = new();
 
-    private bool _isGetConsumers = false;
+    public override MinerInfoView InfoView => new MinerInfoView()
+    {
+        NameMiner = Info.Name,
+        LevelMiner = Info.Level,
+        CurrentProductCount = _electricity,
+        MaximumProductCount = MaximumProductCount,
+        ProductType = this.ProductType
+    };
 
     protected void Start()
     {
@@ -21,19 +29,16 @@ public class ElecticGenerator : Miner, IElectricalGenerator
 
     protected new void FixedUpdate()
     {
-        base.FixedUpdate();
+        if (ThisPickableObject.IsHold) TryStopMine();
+        else TryStartMine();
 
-        if (ThisPickableObject.IsHold)
+        if (!IsHasProductCopacity())
         {
-            _isGetConsumers = false;
-            return;
+            TryStopMine();
+            _electricity = Info.MaxProductCount;
         }
 
-        if (!_isGetConsumers)
-        {
-            _connections = ElectricalCircuit.Instance.GetConsumers(this);
-            _isGetConsumers = true;
-        }
+        _connections = ElectricalCircuit.Instance.GetConsumers(this);
     }
 
     private IEnumerator EnergyDistribution()
@@ -45,17 +50,30 @@ public class ElecticGenerator : Miner, IElectricalGenerator
                 if (!IsHaveElectricity) continue;
 
                 bool result = connection.TryApplyElectricity(1);
-                if (result) CurrentProductCount--;
+                if (!result) continue;
+
+                _electricity--;
+                OnMined?.Invoke(InfoView);
+                TryStartMine();
             }
 
             yield return new WaitForSeconds(1f);
         }
     }
 
+    public override bool IsHasProductCopacity()
+    {
+        return _electricity < Info.MaxProductCount;
+    }
+
     public override void TryStartMine()
     {
         if(IsMined) return;
-        if (!IsHasProductCopacity()) return;
+        if (!IsHasProductCopacity())
+        {
+            IsMined = false;
+            return;
+        }
 
         StartMine();
     }
@@ -63,6 +81,8 @@ public class ElecticGenerator : Miner, IElectricalGenerator
     public override void TryStopMine() 
     {
         if (!IsMined) return;
+        if (!IsHasProductCopacity()) return;
+
         StopMine();
     }
 
@@ -87,22 +107,21 @@ public class ElecticGenerator : Miner, IElectricalGenerator
     {
         float time = 60 / countPerMinute; //value per minute
 
-        while (IsMined && IsHasProductCopacity())
+        while (IsMined)
         {
             yield return new WaitForSeconds(time);
-            CurrentProductCount += 1;
+            _electricity += 1;
 
             if (!IsHasProductCopacity())
             {
-                CurrentProductCount = Info.MaxProductCount;
+                _electricity = Info.MaxProductCount;
+                IsMined = false;
+                OnMined?.Invoke(InfoView);
+                yield break;
             }
 
             OnMined?.Invoke(InfoView);
         }
     }
 
-    public ElecticGenerator GetElectricalGeneratorType()
-    {
-        return this;
-    }
 }
