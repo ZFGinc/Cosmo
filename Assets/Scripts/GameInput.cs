@@ -62,6 +62,33 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CameraZoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""8a81522e-6750-4a3d-a011-60795a4f1399"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ItemListingLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""9c9568a7-8de9-45ed-adbe-a2a206a7bd57"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ItemListingRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""62292fa3-c381-485f-8a44-1b39c017738a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -240,6 +267,72 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""Action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d68c09ed-0087-461e-99a2-46bad1a71327"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraZoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ebafc90b-df0e-4533-acb2-cb2570c651eb"",
+                    ""path"": ""<Gamepad>/rightStick/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraZoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4df7145f-0c67-4915-bccc-f0d8d0e949db"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemListingLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ef17ab3-38d7-4067-83d0-cc745aebbcd3"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemListingLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2c39d0a-f5eb-4f29-a0f4-9a4cf61e1b8a"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemListingRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f182823f-27f2-424a-a3fc-764e7b839b6f"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ItemListingRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -252,6 +345,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_PickUp = m_Gameplay.FindAction("PickUp", throwIfNotFound: true);
         m_Gameplay_Action = m_Gameplay.FindAction("Action", throwIfNotFound: true);
+        m_Gameplay_CameraZoom = m_Gameplay.FindAction("CameraZoom", throwIfNotFound: true);
+        m_Gameplay_ItemListingLeft = m_Gameplay.FindAction("ItemListingLeft", throwIfNotFound: true);
+        m_Gameplay_ItemListingRight = m_Gameplay.FindAction("ItemListingRight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -317,6 +413,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_PickUp;
     private readonly InputAction m_Gameplay_Action;
+    private readonly InputAction m_Gameplay_CameraZoom;
+    private readonly InputAction m_Gameplay_ItemListingLeft;
+    private readonly InputAction m_Gameplay_ItemListingRight;
     public struct GameplayActions
     {
         private @GameInput m_Wrapper;
@@ -325,6 +424,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @PickUp => m_Wrapper.m_Gameplay_PickUp;
         public InputAction @Action => m_Wrapper.m_Gameplay_Action;
+        public InputAction @CameraZoom => m_Wrapper.m_Gameplay_CameraZoom;
+        public InputAction @ItemListingLeft => m_Wrapper.m_Gameplay_ItemListingLeft;
+        public InputAction @ItemListingRight => m_Wrapper.m_Gameplay_ItemListingRight;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -346,6 +448,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Action.started += instance.OnAction;
             @Action.performed += instance.OnAction;
             @Action.canceled += instance.OnAction;
+            @CameraZoom.started += instance.OnCameraZoom;
+            @CameraZoom.performed += instance.OnCameraZoom;
+            @CameraZoom.canceled += instance.OnCameraZoom;
+            @ItemListingLeft.started += instance.OnItemListingLeft;
+            @ItemListingLeft.performed += instance.OnItemListingLeft;
+            @ItemListingLeft.canceled += instance.OnItemListingLeft;
+            @ItemListingRight.started += instance.OnItemListingRight;
+            @ItemListingRight.performed += instance.OnItemListingRight;
+            @ItemListingRight.canceled += instance.OnItemListingRight;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -362,6 +473,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Action.started -= instance.OnAction;
             @Action.performed -= instance.OnAction;
             @Action.canceled -= instance.OnAction;
+            @CameraZoom.started -= instance.OnCameraZoom;
+            @CameraZoom.performed -= instance.OnCameraZoom;
+            @CameraZoom.canceled -= instance.OnCameraZoom;
+            @ItemListingLeft.started -= instance.OnItemListingLeft;
+            @ItemListingLeft.performed -= instance.OnItemListingLeft;
+            @ItemListingLeft.canceled -= instance.OnItemListingLeft;
+            @ItemListingRight.started -= instance.OnItemListingRight;
+            @ItemListingRight.performed -= instance.OnItemListingRight;
+            @ItemListingRight.canceled -= instance.OnItemListingRight;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -385,5 +505,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnPickUp(InputAction.CallbackContext context);
         void OnAction(InputAction.CallbackContext context);
+        void OnCameraZoom(InputAction.CallbackContext context);
+        void OnItemListingLeft(InputAction.CallbackContext context);
+        void OnItemListingRight(InputAction.CallbackContext context);
     }
 }

@@ -234,41 +234,43 @@ public class ElectricalCircuit : MonoBehaviour
             if (_cacheConsumersForElectricGenerators.ContainsKey(start.Item1)) continue;
 
             _cacheConsumersForElectricGenerators.Add(start.Item1, new HashSet<IConsumer>() { });
+            List<IConsumer> list = new();
 
-            foreach(var end in _endEdges)
-            {
-                if(end.Item1 != start.Item2) continue;
-
-                _cacheConsumersForElectricGenerators[start.Item1].Add(end.Item2);
-            }
-
-            HashSet<IConsumer> list = new();
             var copyList = new Tuple<RackPower, RackPower>[_rackEdges.Count];
             var visible = new List<Tuple<RackPower, RackPower>>();
+
+            foreach (var end in _endEdges)
+            {
+                if (end.Item1 != start.Item2) continue;
+
+                list.Add(end.Item2);
+            }
 
             foreach (var rack in _rackEdges)
             {
                 if (rack.Item1 != start.Item2) continue;
 
                 _rackEdges.CopyTo(copyList);
-                _cacheConsumersForElectricGenerators[start.Item1].AddRange(GetPath(ref visible, copyList.ToList(), rack));
+                list.AddRange(GetPath(ref visible, copyList.ToList(), rack));
             }
+
+            _cacheConsumersForElectricGenerators[start.Item1].AddRange(list);
         }
     }
 
-    private HashSet<IConsumer> GetPath(ref List<Tuple<RackPower, RackPower>> visible, List<Tuple<RackPower, RackPower>> rackEdges, Tuple<RackPower, RackPower> rack)
+    private List<IConsumer> GetPath(ref List<Tuple<RackPower, RackPower>> visible, List<Tuple<RackPower, RackPower>> rackEdges, Tuple<RackPower, RackPower> rack)
     {
         rackEdges.Remove(rack);
         visible.Add(rack);
 
         var copyList = new Tuple<RackPower, RackPower>[rackEdges.Count];
-        var list = new HashSet<IConsumer>();
+        var list = new List<IConsumer>();
         var temp = new List<IConsumer>();
 
         rack.Item2.GetConnectionsConsumers(out temp);
         list.AddRange(temp);
 
-        foreach(var edge in rackEdges)
+        foreach (var edge in rackEdges)
         {
             if (edge.Item1 != rack.Item2) continue;
             if (visible.Contains(edge)) continue;

@@ -12,10 +12,17 @@ public class OreMiner : Miner
     public override event Action<MinerInfoView> OnMined;
 
     private uint _countOres = 0;
+    private ProductType _newProductType = ProductType.Null;
 
     private void Start()
     {
         OnMined?.Invoke(InfoView);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, Info.RadiusMine);
     }
 
     private void GetOre()
@@ -38,22 +45,35 @@ public class OreMiner : Miner
         {
             var maxOres = countOres.Aggregate((x, y) => x.Value > y.Value ? x : y);
             _countOres = maxOres.Value;
-            ProductType = maxOres.Key;
+            _newProductType = maxOres.Key;
         }
         else
         {
             _countOres = 0;
-            ProductType = ProductType.Null;
         }
+    }
+
+    private bool IsHasFinishedProduct()
+    { 
+        if (ProductType == _newProductType || ProductType == ProductType.Null)
+        {
+            ProductType = _newProductType;
+            return true;
+        }
+
+        return false;
     }
 
     public override void TryStartMine()
     {
         if (IsMined) return;
-        if (!IsHasProductCopacity()) return;
-        if (!IsHaveElectricity) return;
 
         GetOre();
+
+        if (!IsHasProductCopacity()) return;
+        if (!IsHasFinishedProduct()) return;
+        if (!IsHaveElectricity) return;
+
 
         if (_countOres == 0 || ProductType == ProductType.Null) return;
 

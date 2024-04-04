@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -50,6 +51,8 @@ public abstract class Miner : ElectricityConsumer
         _decalProjector.transform.rotation = Quaternion.Euler(new Vector3(90,0,0));
 
         _decalProjector.gameObject.SetActive(ThisPickableObject.IsHold);
+
+        if (_currentProductCount == 0 && !_isMined) _productType = ProductType.Null;
     }
 
     public virtual MinerInfoView InfoView => new MinerInfoView()

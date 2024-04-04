@@ -4,10 +4,8 @@ using System.Linq;
 using System;
 
 [RequireComponent(typeof(Miner))]
-public class ViewMinerInfo : MonoBehaviour
+public class ViewMinerInfo : View
 {
-    [SerializeField] private Transform _camera;
-    [SerializeField] private Transform _canvas;
     [Space]
     [SerializeField] private TMP_Text _nameandLeveMinerText;
     [SerializeField] private TMP_Text _typeProductMiningText;
@@ -26,10 +24,9 @@ public class ViewMinerInfo : MonoBehaviour
         _miner = GetComponent<Miner>();
     }
 
-    private void LateUpdate()
+    private new void FixedUpdate()
     {
-        _canvas.LookAt(new Vector3(_canvas.position.x, _camera.position.y, _camera.position.z));
-        _canvas.Rotate(0, 180, 0);
+        base.FixedUpdate();
     }
 
     private void OnEnable()
@@ -60,7 +57,7 @@ public class ViewMinerInfo : MonoBehaviour
 
     private void ShowView()
     {
-        _nameandLeveMinerText.text = $"{_nameMiner} ({_levelMiner})";
+        _nameandLeveMinerText.text = $"{_nameMiner} (ур.{_levelMiner})";
         _typeProductMiningText.text = GetFullNameProduct(_productType.ToString());
         _speedMiningText.text = $"{_currentProductCount} / {_maxProductCount}";
     }
@@ -69,13 +66,4 @@ public class ViewMinerInfo : MonoBehaviour
     {   
         return string.Concat(value.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
     }
-}
-
-public struct MinerInfoView
-{
-    public string NameMiner;
-    public uint LevelMiner;
-    public uint CurrentProductCount;
-    public uint MaximumProductCount;
-    public ProductType ProductType;
 }

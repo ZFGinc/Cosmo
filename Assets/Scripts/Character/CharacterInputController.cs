@@ -1,9 +1,13 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class CharacterInputController: MonoBehaviour
 {
+    [SerializeField] private CameraFollower _cameraFollower;
+    [SerializeField] private float _zoomMultiply = 10; 
+
     private GameInput _gameInput;
     private IControllable _controllable;
 
@@ -23,6 +27,7 @@ public class CharacterInputController: MonoBehaviour
     private void Update()
     {
         ReadMovement();
+        ReadCameraZoom();
     }
 
     private void ReadMovement()
@@ -33,11 +38,23 @@ public class CharacterInputController: MonoBehaviour
         _controllable.Move(direction);
     }
 
+    private void ReadCameraZoom()
+    {
+        if (_cameraFollower == null) return;
+
+        var inputZoom = _gameInput.Gameplay.CameraZoom.ReadValue<float>();
+
+        _cameraFollower.ApplyZoomScale(inputZoom/(1000/_zoomMultiply));
+    }
+
     private void OnEnable()
     {
         _gameInput.Gameplay.Jump.performed += OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed += OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed += OnActionPerformed;
+
+        _gameInput.Gameplay.ItemListingLeft.performed += OnItemListingLeftPerformed;
+        _gameInput.Gameplay.ItemListingRight.performed += OnItemListingRightPerformed;
     }
 
     private void OnDestroy()
@@ -45,6 +62,9 @@ public class CharacterInputController: MonoBehaviour
         _gameInput.Gameplay.Jump.performed -= OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed -= OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed -= OnActionPerformed;
+
+        _gameInput.Gameplay.ItemListingLeft.performed -= OnItemListingLeftPerformed;
+        _gameInput.Gameplay.ItemListingRight.performed -= OnItemListingRightPerformed;
     }
 
     private void OnDisable()
@@ -52,6 +72,9 @@ public class CharacterInputController: MonoBehaviour
         _gameInput.Gameplay.Jump.performed -= OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed -= OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed -= OnActionPerformed;
+
+        _gameInput.Gameplay.ItemListingLeft.performed -= OnItemListingLeftPerformed;
+        _gameInput.Gameplay.ItemListingRight.performed -= OnItemListingRightPerformed;
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext obj)
@@ -67,6 +90,16 @@ public class CharacterInputController: MonoBehaviour
     private void OnActionPerformed(InputAction.CallbackContext obj)
     {
         _controllable.Action();
+    }
+
+    private void OnItemListingLeftPerformed(InputAction.CallbackContext obj)
+    {
+        Debug.Log("List to left");
+    }
+
+    private void OnItemListingRightPerformed(InputAction.CallbackContext obj)
+    {
+        Debug.Log("List to right");
     }
 }
 

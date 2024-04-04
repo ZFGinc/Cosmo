@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10924ffbf48d6d3408fa42cdb1265ddb, type: 3}
   m_Name: WindGen_lvl_1
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Simple wind generator
+  <Name>k__BackingField: "\u0412\u0435\u0442\u0440\u044F\u043D\u043D\u043E\u0439
+    \u0433\u0438\u043D\u0435\u0440\u0430\u0442\u043E\u0440"
   <Level>k__BackingField: 1
   <MaxProductCount>k__BackingField: 10
   <SpeedMine>k__BackingField: 60

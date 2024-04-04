@@ -21,9 +21,9 @@ public class PickUpController: MonoBehaviour
         
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(_pickUpCheckerPivot.position, _pickUpRadius);
     }
 

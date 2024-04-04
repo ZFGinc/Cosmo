@@ -26,7 +26,7 @@ public class RackPower : MonoBehaviour
         _decalProjector.gameObject.SetActive(_pickableObject.IsHold);
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, _powerRadius);
