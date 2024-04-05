@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10924ffbf48d6d3408fa42cdb1265ddb, type: 3}
   m_Name: Drill_lvl_2
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: "\u041C\u043E\u0434\u0438\u0444\u0438\u0446\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u044B\u0439
-    \u0431\u0443\u0440"
+  <Name>k__BackingField: "\u041C\u043E\u0434\u0438\u0444-\u044B\u0439 \u0431\u0443\u0440"
   <Level>k__BackingField: 2
-  <MaxProductCount>k__BackingField: 8
-  <SpeedMine>k__BackingField: 10
-  <RadiusMine>k__BackingField: 2
+  <Copacity>k__BackingField: 5
+  <SpeedMining>k__BackingField: 5
+  <RadiusMining>k__BackingField: 2
+  <ElectricityCopacity>k__BackingField: 8

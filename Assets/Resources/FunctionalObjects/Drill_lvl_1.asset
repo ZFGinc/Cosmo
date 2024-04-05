@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: "\u041F\u0440\u043E\u0441\u0442\u043E\u0439 \u0431\u0443\u0440"
   <Level>k__BackingField: 1
-  <MaxProductCount>k__BackingField: 5
-  <SpeedMine>k__BackingField: 6
-  <RadiusMine>k__BackingField: 2
+  <Copacity>k__BackingField: 2
+  <SpeedMining>k__BackingField: 3
+  <RadiusMining>k__BackingField: 2
+  <ElectricityCopacity>k__BackingField: 5

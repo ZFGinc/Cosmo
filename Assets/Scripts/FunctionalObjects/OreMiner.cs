@@ -7,34 +7,40 @@ using UnityEngine;
 [RequireComponent(typeof(PickableObject))]
 public class OreMiner : Miner
 {
+    [Space]
     [SerializeField] private Transform _productionAreaPivot;
+    [SerializeField] private Transform _productionSpawnPoint;
 
-    public override event Action<MinerInfoView> OnMined;
+    public override event Action<MinerInfo, MinedItem, uint> UpdateView;
 
     private uint _countOres = 0;
-    private ProductType _newProductType = ProductType.Null;
+    private MinedItemType _newMinedItemType = MinedItemType.Null;
+    private ItemObject _lastSpawnedItem = null;
 
     private void Start()
     {
-        OnMined?.Invoke(InfoView);
+        UpdateView?.Invoke(MinerInfo, MinedItemInfo, _electricity);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, Info.RadiusMine);
+        Gizmos.DrawWireSphere(transform.position, MinerInfo.RadiusMining);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, MinerInfo.RadiusMining*1.5f);
     }
 
     private void GetOre()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(_productionAreaPivot.position, Info.RadiusMine);
-        Dictionary<ProductType, uint> countOres = new Dictionary<ProductType, uint>();
+        Collider[] hitColliders = Physics.OverlapSphere(_productionAreaPivot.position, MinerInfo.RadiusMining);
+        Dictionary<MinedItemType, uint> countOres = new Dictionary<MinedItemType, uint>();
 
         foreach (Collider collider in hitColliders)
         {
             if (collider.gameObject.TryGetComponent(out Ore ore))
             {
-                ProductType type = ore.GetTypeOre();
+                MinedItemType type = ore.GetMinedItemType();
 
                 if(countOres.ContainsKey(type)) countOres[type]++;
                 else countOres.Add(type, 1);
@@ -45,7 +51,7 @@ public class OreMiner : Miner
         {
             var maxOres = countOres.Aggregate((x, y) => x.Value > y.Value ? x : y);
             _countOres = maxOres.Value;
-            _newProductType = maxOres.Key;
+            _newMinedItemType = maxOres.Key;
         }
         else
         {
@@ -55,17 +61,53 @@ public class OreMiner : Miner
 
     private bool IsHasFinishedProduct()
     { 
-        if (ProductType == _newProductType || ProductType == ProductType.Null)
+        if (MinedItemType == _newMinedItemType || MinedItemType == MinedItemType.Null)
         {
-            ProductType = _newProductType;
+            MinedItemType = _newMinedItemType;
             return true;
         }
 
         return false;
     }
 
+    private void GetCountCurrnetItemsAround()
+    {
+        uint count = 0;
+
+        Collider[] hitColliders = Physics.OverlapSphere(_productionAreaPivot.position, MinerInfo.RadiusMining*1.5f);
+
+        foreach (Collider collider in hitColliders)
+        {
+            if (collider.gameObject.TryGetComponent(out ItemObject item))
+            {
+                count++;
+            }
+        }
+
+        CurrentItemsCount = count;
+    }
+
+    private void SpawnNewItemAround()
+    {
+        if (!IsHasProductCopacity()) return;
+
+        var obj = Instantiate(MinedItemInfo.Prefab, _productionSpawnPoint.position, Quaternion.identity);
+
+        if (!IsHasProductCopacity()) Destroy(obj.gameObject);
+    }
+
+    public override bool IsHasProductCopacity()
+    {
+        if (CurrentItemsCount >= MinerInfo.Copacity) return false;
+
+        return true;
+    }
+
     public override void TryStartMine()
     {
+        GetCountCurrnetItemsAround();
+
+        if (IsMiningStarted) return;
         if (IsMined) return;
 
         GetOre();
@@ -74,8 +116,7 @@ public class OreMiner : Miner
         if (!IsHasFinishedProduct()) return;
         if (!IsHaveElectricity) return;
 
-
-        if (_countOres == 0 || ProductType == ProductType.Null) return;
+        if (_countOres == 0 || MinedItemType == MinedItemType.Null) return;
 
         StartMine();
     }
@@ -89,36 +130,44 @@ public class OreMiner : Miner
     public override void StartMine()
     {
         IsMined = true;
-        StartCoroutine(Mine(Info.SpeedMine, _countOres));
+        StartCoroutine(Mine(MinerInfo.SpeedMining));
     }
 
     public override void StopMine()
     {
         IsMined = false;
-        StopCoroutine(Mine(Info.SpeedMine, _countOres));
-    }
-
-    public override IEnumerator Mine(uint countPerMinute, uint countOres)
-    {
-        float time = 60 / countPerMinute; //value per minute
-
-        while (IsMined && IsHaveElectricity && IsHasProductCopacity())
-        {
-            yield return new WaitForSeconds(time);
-            CurrentProductCount += countOres;
-            TryUsageElectricity(1);
-
-            if (!IsHasProductCopacity())
-            {
-                CurrentProductCount = Info.MaxProductCount;
-            }
-
-            OnMined?.Invoke(InfoView);
-        }
+        StopCoroutine(Mine(MinerInfo.SpeedMining));
     }
 
     public override IEnumerator Mine(uint countPerMinute)
     {
-        yield return null;
+        IsMiningStarted = true;
+
+        float time = 60 / countPerMinute; //value per minute
+
+        while (IsMined && IsHaveElectricity && IsHasProductCopacity() && IsMiningStarted)
+        {
+            yield return new WaitForSeconds(time);
+            if(!IsMined) break;
+
+            if (!IsHasProductCopacity())
+            {
+                IsMined = false;
+                break;
+            }
+
+            bool result = TryUsageElectricity(1);
+            if (!result)
+            {
+                IsMined = false;
+                break;
+            }
+
+            SpawnNewItemAround();
+
+            UpdateView?.Invoke(MinerInfo, MinedItemInfo, _electricity);
+        }
+
+        IsMiningStarted = false;
     }
 }

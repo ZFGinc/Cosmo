@@ -2,8 +2,9 @@
 
 public class Ore: MonoBehaviour
 {
-    [SerializeField] private OreInfo _info;
+    [SerializeField] private MinedItem _minedItem;
 
-    public ProductType GetTypeOre() => _info.Type;
+    public MinedItem GetMinedItem() => _minedItem;
+    public MinedItemType GetMinedItemType() => _minedItem.Type;
 }
 

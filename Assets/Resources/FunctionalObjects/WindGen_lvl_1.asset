@@ -15,6 +15,7 @@ MonoBehaviour:
   <Name>k__BackingField: "\u0412\u0435\u0442\u0440\u044F\u043D\u043D\u043E\u0439
     \u0433\u0438\u043D\u0435\u0440\u0430\u0442\u043E\u0440"
   <Level>k__BackingField: 1
-  <MaxProductCount>k__BackingField: 10
-  <SpeedMine>k__BackingField: 60
-  <RadiusMine>k__BackingField: 5
+  <Copacity>k__BackingField: 10
+  <SpeedMining>k__BackingField: 20
+  <RadiusMining>k__BackingField: 0
+  <ElectricityCopacity>k__BackingField: 10

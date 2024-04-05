@@ -7,8 +7,9 @@ public class View : MonoBehaviour
     [SerializeField] private float _radiusShowUINearPlayer = 5f;
     [SerializeField] private float _speedEnableUI = 5f;
 
-    private bool _enabledUI = false;
-    private Vector2 _minMaxSizeUI = new Vector2(0, 1);
+    protected bool _enabledUI = false;
+    
+    private Vector2 _minMaxSizeUI = Vector2.up;
     private RectTransform _rectTransformCanvas;
 
     protected void Start()
