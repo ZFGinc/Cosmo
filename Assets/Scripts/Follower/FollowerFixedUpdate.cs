@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FollowerFixedUpdate: Follower
+public sealed class FollowerFixedUpdate: Follower
 {
     private void FixedUpdate()
     {

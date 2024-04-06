@@ -1,15 +1,17 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class CharacterInputController: MonoBehaviour
+[RequireComponent(typeof(IControllable))]
+[RequireComponent(typeof(IActionController))]
+public sealed class CharacterInputController: MonoBehaviour
 {
     [SerializeField] private CameraFollower _cameraFollower;
     [SerializeField] private float _zoomMultiply = 10; 
 
     private GameInput _gameInput;
     private IControllable _controllable;
+    private IActionController _actionConntroller;
 
     private void Awake()
     {
@@ -17,6 +19,7 @@ public class CharacterInputController: MonoBehaviour
         _gameInput.Enable();
 
         _controllable = GetComponent<IControllable>();
+        _actionConntroller = GetComponent<IActionController>();
 
         if (_controllable == null)
         {
@@ -89,17 +92,17 @@ public class CharacterInputController: MonoBehaviour
 
     private void OnActionPerformed(InputAction.CallbackContext obj)
     {
-        _controllable.Action();
+        _actionConntroller.Action();
     }
 
     private void OnItemListingLeftPerformed(InputAction.CallbackContext obj)
     {
-        Debug.Log("List to left");
+        _actionConntroller.LeftSwipe();
     }
 
     private void OnItemListingRightPerformed(InputAction.CallbackContext obj)
     {
-        Debug.Log("List to right");
+        _actionConntroller.RightSwipe();
     }
 }
 

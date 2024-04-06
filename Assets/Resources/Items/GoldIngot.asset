@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd3ea38861e0ea40a1f1965e4b16255, type: 3}
   m_Name: GoldIngot
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: "\u0416\u0435\u043B\u0435\u0437\u043D\u044B\u0439 \u0441\u043B\u0438\u0442\u043E\u043A"
+  <Name>k__BackingField: "\u0417\u043E\u043B\u043E\u0442\u043E\u0439 \u0441\u043B\u0438\u0442\u043E\u043A"
   <Description>k__BackingField: 
   <Icon>k__BackingField: {fileID: 21300000, guid: 732e9c855c79e7843b7322c35a4b9d5e,
     type: 3}
-  <Prefab>k__BackingField: {fileID: 0}
+  <Prefab>k__BackingField: {fileID: 5006676984172758619, guid: cfa50a98c274cba4fa7f14e909483f8f,
+    type: 3}

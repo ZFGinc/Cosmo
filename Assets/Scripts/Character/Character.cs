@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PickUpController))]
-public class Character : MonoBehaviour, IControllable
+public sealed class Character : MonoBehaviour, IControllable
 {
     [Header("Настройки управления")]
     [SerializeField, Range(5,10)] private float _speedMovement = 5f;

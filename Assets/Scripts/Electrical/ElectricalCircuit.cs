@@ -4,7 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ElectricalCircuit : MonoBehaviour
+public sealed class ElectricalCircuit : MonoBehaviour
 {
     [SerializeField] private LineRenderer _prefabWire;
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PickableObject))]
-public class Crafter : ElectricityConsumer
+public sealed class Crafter : ElectricityConsumer
 {
     
 }

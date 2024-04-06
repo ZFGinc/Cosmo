@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FollowerUpdate: Follower
+public sealed class FollowerUpdate: Follower
 {
     private void Update()
     {
