@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PickableObject))]
-public sealed class ItemObject : MonoBehaviour
+public class ItemObject : MonoBehaviour
 {
     public Item Item => _item;
 
@@ -13,6 +13,8 @@ public sealed class ItemObject : MonoBehaviour
     {
         _pickableObject = GetComponent<PickableObject>();
     }
+
+    public bool IsHold => _pickableObject.IsHold;
 
     public void DisableHold()
     {

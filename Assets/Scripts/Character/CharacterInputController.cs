@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(IControllable))]
 [RequireComponent(typeof(IActionController))]
-public sealed class CharacterInputController: MonoBehaviour
+public class CharacterInputController: MonoBehaviour
 {
     [SerializeField] private CameraFollower _cameraFollower;
     [SerializeField] private float _zoomMultiply = 10; 

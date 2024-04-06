@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public sealed class PickUpController: MonoBehaviour
+public class PickUpController: MonoBehaviour
 {
     [SerializeField] private Transform _pickUpCheckerPivot;
     [SerializeField] private float _pickUpRadius = 0.2f;

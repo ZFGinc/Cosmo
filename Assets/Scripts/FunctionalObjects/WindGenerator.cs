@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PickableObject))]
-public sealed class WindGenerator : ElecticGenerator
+public class WindGenerator : ElecticGenerator
 {
     [SerializeField] private Transform _rotationVisualMined;
     [SerializeField] private Vector3 _vectorRotationVisual;

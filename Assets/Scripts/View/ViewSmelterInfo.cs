@@ -3,15 +3,15 @@ using TMPro;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Smelter))]
-public sealed class ViewSmelterInfo : View
+public class ViewSmelterInfo : View
 {
     [Space]
     [SerializeField] private TMP_Text _textSmelterNamePlusLevel;
     [SerializeField] private TMP_Text _textNewItemName;
     [SerializeField] private TMP_Text _textForStart;
-    [SerializeField] private Image _imageMiningItemIcon;
+    [SerializeField] private Image _imageItemIcon;
     [Space]
-    [SerializeField] private Slider _slederCurrentElectricity;
+    [SerializeField] private Slider _smelterCurrentElectricity;
     [Space]
     [SerializeField] private Gradient _progressBarGradient;
     [SerializeField] private Slider _progressBar;
@@ -84,14 +84,14 @@ public sealed class ViewSmelterInfo : View
     {
         _electricity = electricity;
 
-        _slederCurrentElectricity.maxValue = copacity;
-        _slederCurrentElectricity.value = electricity;
+        _smelterCurrentElectricity.maxValue = copacity;
+        _smelterCurrentElectricity.value = electricity;
     }
 
     private void ShowView()
     {
-        _slederCurrentElectricity.maxValue = _smelterInfo.ElectricityCopacity;
-        _slederCurrentElectricity.value = _electricity;
+        _smelterCurrentElectricity.maxValue = _smelterInfo.ElectricityCopacity;
+        _smelterCurrentElectricity.value = _electricity;
 
         _textSmelterNamePlusLevel.text = $"{_smelterInfo.Name} (ур.{_smelterInfo.Level})";
 
@@ -100,8 +100,8 @@ public sealed class ViewSmelterInfo : View
         _textNewItemName.text = $"{_item.Name}";
         _textForStart.gameObject.SetActive(true);
 
-        _imageMiningItemIcon.gameObject.SetActive(true);
-        _imageMiningItemIcon.sprite = _item.Icon;
+        _imageItemIcon.gameObject.SetActive(true);
+        _imageItemIcon.sprite = _item.Icon;
     }
 
     private void HideView()
@@ -111,6 +111,6 @@ public sealed class ViewSmelterInfo : View
         _textNewItemName.text = "ќжидание руды";
         _textForStart.gameObject.SetActive(false);
 
-        _imageMiningItemIcon.gameObject.SetActive(false);
+        _imageItemIcon.gameObject.SetActive(false);
     }
 }

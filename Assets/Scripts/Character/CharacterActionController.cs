@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class CharacterActionController : MonoBehaviour, IActionController
+public class CharacterActionController : MonoBehaviour, IActionController
 {
     [SerializeField] private Transform _pickUpCheckerPivot;
     [SerializeField] private float _radiusChechActionObjects;
@@ -13,7 +11,7 @@ public sealed class CharacterActionController : MonoBehaviour, IActionController
         Gizmos.DrawWireSphere(_pickUpCheckerPivot.position, _radiusChechActionObjects);
     }
 
-    private T TryGetActionObject<T>() where T : IActionObejctBase?
+    private T TryGetActionObject<T>() where T : IActionObejctBase
     {
         Collider[] hitColliders = Physics.OverlapSphere(_pickUpCheckerPivot.position, _radiusChechActionObjects);
         foreach (Collider collider in hitColliders)
@@ -24,7 +22,6 @@ public sealed class CharacterActionController : MonoBehaviour, IActionController
             }
         }
 
-        Debug.Log(default(T));
         return default(T);
     }
 

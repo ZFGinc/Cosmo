@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 69cdff8d23210f24bb0b3939119714cc, type: 3}
-  m_Name: GoldOreToIgnot
+  m_Name: 1GoldOreToIgnot
   m_EditorClassIdentifier: 
   <NeedItems>k__BackingField:
   - {fileID: 11400000, guid: b83e88a0a3de33c4a8ea94a988abd510, type: 2}
   <Item>k__BackingField: {fileID: 11400000, guid: f273732db80414a46a5dfa09794f77f9,
     type: 2}
+  <CountProductedItems>k__BackingField: 1

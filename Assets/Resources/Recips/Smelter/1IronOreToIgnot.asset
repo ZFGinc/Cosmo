@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69cdff8d23210f24bb0b3939119714cc, type: 3}
+  m_Name: 1IronOreToIgnot
+  m_EditorClassIdentifier: 
+  <NeedItems>k__BackingField:
+  - {fileID: 11400000, guid: a5e860a2439fa4649a9e319a987f1691, type: 2}
+  <Item>k__BackingField: {fileID: 11400000, guid: 1ee562dcb089efb4998275e1854e1b8e,
+    type: 2}
+  <CountProductedItems>k__BackingField: 1

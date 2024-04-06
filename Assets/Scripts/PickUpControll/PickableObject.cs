@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public sealed class PickableObject : MonoBehaviour, IPickable, IPushObject
+public class PickableObject : MonoBehaviour, IPickable, IPushObject
 {
     [SerializeField] private bool _isCanPush = false;
 

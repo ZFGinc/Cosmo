@@ -1,7 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Android;
 
-public sealed class LoaderItemsFromResources : MonoBehaviour
+public class LoaderItemsFromResources : MonoBehaviour
 {
     [field: SerializeField] public List<Item> _items { get; private set; }
     [field: SerializeField] public List<MinedItem> _minedItems { get; private set; }
@@ -25,7 +28,7 @@ public sealed class LoaderItemsFromResources : MonoBehaviour
 
     private void LoadItems()
     {
-
+        
     }
 
     public Item GetItemByName(string name)
@@ -60,9 +63,13 @@ public sealed class LoaderItemsFromResources : MonoBehaviour
 
     public Recipe GetRecipeByNeedItems(List<Item> needItems)
     {
+        if(needItems.Count == 0) return null;
+
+        needItems.Sort();
         foreach (var recipe in _recipes)
         {
-            if (new HashSet<Item>(recipe.NeedItems).SetEquals(needItems)) return recipe;
+            recipe.NeedItems.Sort();
+            if (needItems.SequenceEqual(recipe.NeedItems)) return recipe;
         }
 
         return null;

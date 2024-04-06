@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Miner))]
-public sealed class ViewMinerInfo : View
+public class ViewMinerInfo : View
 {
     [Space]
     [SerializeField] private TMP_Text _textMinerNamePlusLevel;

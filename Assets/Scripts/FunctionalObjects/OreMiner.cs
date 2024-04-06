@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(PickableObject))]
-public sealed class OreMiner : Miner
+public class OreMiner : Miner
 {
     [Space]
     [SerializeField] private Transform _productionAreaPivot;

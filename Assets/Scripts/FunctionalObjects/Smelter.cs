@@ -1,11 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(PickableObject))]
-public sealed class Smelter : UsingRecipes, IActionObject
+public class Smelter : UsingRecipes, IActionObject
 {
     [Space]
     [SerializeField] private Vector3 _sizeCubeForCheckItems;
@@ -72,6 +71,15 @@ public sealed class Smelter : UsingRecipes, IActionObject
             item.DisableHold();
             item.transform.parent = null;
         }
+    }
+
+    private bool IsAllObjectNotHold()
+    {
+        foreach (var item in _itemObjects)
+        {
+            if (item.IsHold) return false;
+        }
+        return true;
     }
 
     protected override void UpdateView()
@@ -156,7 +164,10 @@ public sealed class Smelter : UsingRecipes, IActionObject
         yield return new WaitForSeconds(time);
         if(!IsUsingRecipe || _items.Count == 0) yield return null;
 
-        Instantiate(_currentRecipe.Item.Prefab, PivotForSpawnNewItem.position, Quaternion.identity);
+        for (int i = 0; i < _currentRecipe.CountProductedItems; i++)
+        {
+            Instantiate(_currentRecipe.Item.Prefab, PivotForSpawnNewItem.position, Quaternion.identity);
+        }
 
         foreach(ItemObject itemObject in _itemObjects)
         {
@@ -176,6 +187,7 @@ public sealed class Smelter : UsingRecipes, IActionObject
         if (!IsHaveElectricity) return;
         if (_items.Count == 0) return;
         if (_currentRecipe == null) return;
+        if (!IsAllObjectNotHold()) return;
 
         StartCoroutine(UsingRecipe());
     }

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[SelectionBase]
 public abstract class ElectricityConsumer : MonoBehaviour, IConsumer
 {
     private uint _electricityCopacity = 10;
