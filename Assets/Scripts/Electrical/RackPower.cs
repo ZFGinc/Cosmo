@@ -8,8 +8,6 @@ public class RackPower : MonoBehaviour
     [SerializeField] private DecalProjector _decalProjector;
     [SerializeField] private float _powerRadius = 5f;
 
-    private bool _isGetConsumers = true;
-
     private PickableObject _pickableObject;
 
     private void Start()

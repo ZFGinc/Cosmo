@@ -16,7 +16,7 @@ PrefabInstance:
     - target: {fileID: 6483821503697656218, guid: 60cfedcb897c3b944b612d6c0e508f5d,
         type: 3}
       propertyPath: m_Name
-      value: GoldOrePrefab Variant
+      value: GoldOrePrefab
       objectReference: {fileID: 0}
     - target: {fileID: 7232580587170408703, guid: 60cfedcb897c3b944b612d6c0e508f5d,
         type: 3}

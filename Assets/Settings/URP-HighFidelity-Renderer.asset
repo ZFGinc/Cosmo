@@ -20,8 +20,8 @@ MonoBehaviour:
   outlineSettings:
     outlineColor: {r: 0, g: 0, b: 0, a: 0.74509805}
     outlineScale: 1
-    depthThreshold: 1.5
-    robertsCrossMultiplier: 100
+    depthThreshold: 13
+    robertsCrossMultiplier: 500
     normalThreshold: 0.4
     steepAngleThreshold: 0.2
     steepAngleMultiplier: 25
@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Settings:
     technique: 0
     maxDrawDistance: 1000
-    decalLayers: 0
+    decalLayers: 1
     dBufferSettings:
       surfaceData: 2
     screenSpaceSettings:
