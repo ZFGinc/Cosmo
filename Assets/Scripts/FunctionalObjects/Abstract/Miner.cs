@@ -72,22 +72,16 @@ public abstract class Miner : ElectricityConsumer
 
     protected override bool TryUsageElectricity(uint value)
     {
-        if (!IsHaveElectricity) return false;
-        if (_electricity - value < 0) return false;
-
-        _electricity -= value;
         UpdateElectricityView?.Invoke(_electricity, _minerInfo.ElectricityCopacity);
-        return true;
+
+        return base.TryUsageElectricity(value);
     }
 
     public override bool TryApplyElectricity(uint value)
     {
-        if (IsElectricityFull) return false;
-        if (_electricity + value > MinerInfo.ElectricityCopacity) return false;
-
-        _electricity += value;
         UpdateElectricityView?.Invoke(_electricity, _minerInfo.ElectricityCopacity);
-        return true;
+
+        return base.TryApplyElectricity(value);
     }
 
     public abstract void TryStartMine();
@@ -99,6 +93,4 @@ public abstract class Miner : ElectricityConsumer
     public abstract void StopMine();
 
     public abstract IEnumerator Mine(uint countPerMinute);
-
-    //public abstract IEnumerator Mine(uint countPerMinute, uint countOres);
 }

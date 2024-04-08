@@ -19,7 +19,7 @@ public class PickableObject : MonoBehaviour, IPickable, IPushObject
 
     private void FixedUpdate()
     {
-        //if (_controller != null && !IsHold) IsHold = false;
+        if (!IsHold) IsHold = false;
         ControllRigidBody(IsHold);
 
         if (!IsHold) return;

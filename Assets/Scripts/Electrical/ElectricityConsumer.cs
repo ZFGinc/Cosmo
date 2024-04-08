@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class ElectricityConsumer : MonoBehaviour, IConsumer
 {
     private uint _electricityCopacity = 10;
+
     protected uint _electricity;
 
     protected bool IsHaveElectricity => _electricity > 0;
@@ -14,7 +15,7 @@ public abstract class ElectricityConsumer : MonoBehaviour, IConsumer
     protected virtual bool TryUsageElectricity(uint value)
     {
         if (!IsHaveElectricity) return false;
-        if (_electricity - value <= 0) return false;
+        if (_electricity - value < 0) return false;
 
         _electricity -= value;
         return true;

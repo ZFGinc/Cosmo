@@ -157,7 +157,7 @@ public class Boer : Miner
 
         while (IsMined && IsHaveElectricity && IsHasProductCopacity() && IsMiningStarted)
         {
-            ResetProgress?.Invoke();
+            UpdateView?.Invoke(MinerInfo, MinedItemInfo, _electricity);
 
             for (int i = 0; i < checkCount; i++)
             {
@@ -184,7 +184,6 @@ public class Boer : Miner
             }
 
             SpawnNewItemAround();
-
         }
 
         IsMiningStarted = false;
