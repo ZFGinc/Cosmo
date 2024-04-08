@@ -19,6 +19,7 @@ public abstract class UsingRecipes : ElectricityConsumer
     //Ивенты для обновления View
     public abstract event Action<RecipeUserInfo, Item, uint> OnUpdateView;
     public abstract event Action<uint, uint> OnUpdateElectricityView;
+    public abstract event Action OnResetProgress;
 
     //Текущие предметы и рецепт 
     protected List<Item> _items = new();
@@ -31,6 +32,7 @@ public abstract class UsingRecipes : ElectricityConsumer
     protected abstract void UpdateCurrentRecipe();
     protected abstract void UpdateView();
     protected abstract void UpdateElectricityView();
+    protected abstract void ResetProgress();
 
     protected abstract void TryStart();
     protected abstract void TryStop();

@@ -42,30 +42,43 @@ public class ViewCrafterInfo : View
     {
         _crafter.OnUpdateView += UpdateView;
         _crafter.OnUpdateElectricityView += UpdateElectricityView;
+        _crafter.OnResetProgress += OnResetProgress;
     }
 
     private void OnDisable()
     {
         _crafter.OnUpdateView -= UpdateView;
         _crafter.OnUpdateElectricityView -= UpdateElectricityView;
+        _crafter.OnResetProgress -= OnResetProgress;
     }
 
     private void OnDestroy()
     {
         _crafter.OnUpdateView -= UpdateView;
         _crafter.OnUpdateElectricityView -= UpdateElectricityView;
+        _crafter.OnResetProgress -= OnResetProgress;
     }
 
     private void ProgressBar()
     {
-        if (_progressBar == null || !_enabledUI) return;
-        _progressBar.value = _currentProgress / _maxProgress;
-
         if (!_crafter.IsUsingRecipe) return;
         _currentProgress += Time.fixedDeltaTime;
 
+        UpdateProgressBarValue();
+        UpdateProgressBarColor();
+    }
+
+    private void UpdateProgressBarColor()
+    {
         if (_fillAreaImage == null) return;
+
         _fillAreaImage.color = _progressBarGradient.Evaluate(_currentProgress / _maxProgress);
+    }
+    private void UpdateProgressBarValue()
+    {
+        if (_progressBar == null || !_enabledUI) return;
+
+        _progressBar.value = _currentProgress / _maxProgress;
     }
 
     private void UpdateView(RecipeUserInfo crafterInfo, Item item, uint electricity)
@@ -86,6 +99,14 @@ public class ViewCrafterInfo : View
 
         _crafterCurrentElectricity.maxValue = copacity;
         _crafterCurrentElectricity.value = electricity;
+    }
+
+    private void OnResetProgress()
+    {
+        _currentProgress = 0;
+
+        UpdateProgressBarValue();
+        UpdateProgressBarColor();
     }
 
     private void ShowView()

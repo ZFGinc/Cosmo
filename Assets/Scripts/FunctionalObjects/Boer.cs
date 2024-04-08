@@ -17,6 +17,7 @@ public class Boer : Miner
     [SerializeField, AnimatorParam("_animator")] private int _animatorTriggerEndMining;
 
     public override event Action<MinerInfo, MinedItem, uint> UpdateView;
+    public event Action ResetProgress;
 
     private uint _countOres = 0;
     private MinedItemType _newMinedItemType = MinedItemType.Null;
@@ -24,6 +25,7 @@ public class Boer : Miner
     private void Start()
     {
         UpdateView?.Invoke(MinerInfo, MinedItemInfo, _electricity);
+        ResetProgress?.Invoke();
 
         if (_animator == null)
             throw new Exception("≈блан, а че анимировать мне?");
@@ -96,8 +98,6 @@ public class Boer : Miner
 
     private void SpawnNewItemAround()
     {
-        if (!IsHasProductCopacity()) return;
-
         var obj = Instantiate(MinedItemInfo.Prefab, _productionSpawnPoint.position, Quaternion.identity);
 
         if (!IsHasProductCopacity()) Destroy(obj.gameObject);
@@ -151,12 +151,24 @@ public class Boer : Miner
         IsMiningStarted = true;
         _animator.SetTrigger(_animatorTriggerStartMining);
 
+        int checkCount = 5;
         float time = 60 / countPerMinute; //value per minute
+        float timeForCheckIfHerePickUp = time / checkCount;
 
         while (IsMined && IsHaveElectricity && IsHasProductCopacity() && IsMiningStarted)
         {
-            yield return new WaitForSeconds(time);
-            if(!IsMined) break;
+            ResetProgress?.Invoke();
+
+            for (int i = 0; i < checkCount; i++)
+            {
+                yield return new WaitForSeconds(timeForCheckIfHerePickUp);
+                if (!IsMined) break;
+            }
+            if (!IsMined)
+            {
+                ResetProgress?.Invoke();
+                break;
+            }
 
             if (!IsHasProductCopacity())
             {
@@ -173,10 +185,10 @@ public class Boer : Miner
 
             SpawnNewItemAround();
 
-            UpdateView?.Invoke(MinerInfo, MinedItemInfo, _electricity);
         }
 
         IsMiningStarted = false;
         _animator.SetTrigger(_animatorTriggerEndMining);
+        UpdateView?.Invoke(MinerInfo, MinedItemInfo, _electricity);
     }
 }

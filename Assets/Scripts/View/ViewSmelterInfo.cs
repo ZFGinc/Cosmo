@@ -42,30 +42,30 @@ public class ViewSmelterInfo : View
     {
         _smelter.OnUpdateView += UpdateView;
         _smelter.OnUpdateElectricityView += UpdateElectricityView;
+        _smelter.OnResetProgress += OnResetProgress;
     }
 
     private void OnDisable()
     {
         _smelter.OnUpdateView -= UpdateView;
         _smelter.OnUpdateElectricityView -= UpdateElectricityView;
+        _smelter.OnResetProgress -= OnResetProgress;
     }
 
     private void OnDestroy()
     {
         _smelter.OnUpdateView -= UpdateView;
         _smelter.OnUpdateElectricityView -= UpdateElectricityView;
+        _smelter.OnResetProgress -= OnResetProgress;
     }
 
     private void ProgressBar()
     {
-        if (_progressBar == null || !_enabledUI) return;
-        _progressBar.value = _currentProgress / _maxProgress;
-
         if (!_smelter.IsUsingRecipe) return;
         _currentProgress += Time.fixedDeltaTime;
 
-        if (_fillAreaImage == null) return;
-        _fillAreaImage.color = _progressBarGradient.Evaluate(_currentProgress / _maxProgress);
+        UpdateProgressBarValue();
+        UpdateProgressBarColor();
     }
 
     private void UpdateView(RecipeUserInfo smelterInfo, Item item, uint electricity)
@@ -86,6 +86,27 @@ public class ViewSmelterInfo : View
 
         _smelterCurrentElectricity.maxValue = copacity;
         _smelterCurrentElectricity.value = electricity;
+    }
+
+    private void OnResetProgress()
+    {
+        _currentProgress = 0;
+
+        UpdateProgressBarValue();
+        UpdateProgressBarColor();
+    }
+
+    private void UpdateProgressBarColor()
+    {
+        if (_fillAreaImage == null) return;
+
+        _fillAreaImage.color = _progressBarGradient.Evaluate(_currentProgress / _maxProgress);
+    }
+    private void UpdateProgressBarValue()
+    {
+        if (_progressBar == null || !_enabledUI) return;
+
+        _progressBar.value = _currentProgress / _maxProgress;
     }
 
     private void ShowView()

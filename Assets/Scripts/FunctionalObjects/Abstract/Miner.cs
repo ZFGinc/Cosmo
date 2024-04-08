@@ -73,7 +73,7 @@ public abstract class Miner : ElectricityConsumer
     protected override bool TryUsageElectricity(uint value)
     {
         if (!IsHaveElectricity) return false;
-        if (_electricity - value <= 0) return false;
+        if (_electricity - value < 0) return false;
 
         _electricity -= value;
         UpdateElectricityView?.Invoke(_electricity, _minerInfo.ElectricityCopacity);

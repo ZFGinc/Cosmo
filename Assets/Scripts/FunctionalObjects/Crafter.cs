@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using System.Collections;
+using System.Diagnostics.Tracing;
 
 [RequireComponent(typeof(PickableObject))]
 public class Crafter : UsingRecipes, IActionObject
@@ -14,6 +15,7 @@ public class Crafter : UsingRecipes, IActionObject
 
     public override event Action<RecipeUserInfo, Item, uint> OnUpdateView;
     public override event Action<uint, uint> OnUpdateElectricityView;
+    public override event Action OnResetProgress;
 
     private void Awake()
     {
@@ -23,11 +25,12 @@ public class Crafter : UsingRecipes, IActionObject
     private void Start()
     {
         UpdateView();
+        ResetProgress();
     }
 
     private void FixedUpdate()
     {
-        if (_pickableObject.IsHold)
+        if (_pickableObject.IsHold && !IsUsingRecipe)
         {
             if (_itemObjects.Count == 0) return;
             foreach (ItemObject itemObject in _itemObjects) itemObject.EnableGravity();
@@ -91,6 +94,11 @@ public class Crafter : UsingRecipes, IActionObject
     protected override void UpdateElectricityView()
     {
         OnUpdateElectricityView?.Invoke(_electricity, RecipeUserInfo.ElectricityCopacity);
+    }
+
+    protected override void ResetProgress()
+    {
+        OnResetProgress?.Invoke();
     }
 
     protected override void CheckItems()
@@ -158,6 +166,7 @@ public class Crafter : UsingRecipes, IActionObject
 
         IsUsingRecipe = true;
         UpdateView();
+        ResetProgress();
         LockItems();
 
         float time = 60 / RecipeUserInfo.SpeedUseRecipe; //value per minute
@@ -179,6 +188,7 @@ public class Crafter : UsingRecipes, IActionObject
 
         IsUsingRecipe = false;
         UpdateView();
+        ResetProgress();
     }
 
     protected override void TryStart()

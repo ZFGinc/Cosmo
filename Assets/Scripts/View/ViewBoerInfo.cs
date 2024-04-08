@@ -26,6 +26,8 @@ public class ViewBoerInfo : View
     private float _currentProgress = 0;
     private float _maxProgress = 1;
 
+    private bool _isBoerMining => _boer.IsMiningStarted && _boer.IsMined;
+
     private void Awake()
     {
         _boer = GetComponent<Boer>();
@@ -40,35 +42,55 @@ public class ViewBoerInfo : View
 
     private void OnEnable()
     {
-        _boer.UpdateView += UpdateView;
-        _boer.UpdateElectricityView += UpdateElectricityView;
+        _boer.UpdateView += OnUpdateView;
+        _boer.UpdateElectricityView += OnUpdateElectricityView;
+        _boer.ResetProgress += OnResetProgress;
     }
 
     private void OnDisable()
     {
-        _boer.UpdateView -= UpdateView;
-        _boer.UpdateElectricityView -= UpdateElectricityView;
+        _boer.UpdateView -= OnUpdateView;
+        _boer.UpdateElectricityView -= OnUpdateElectricityView;
+        _boer.ResetProgress -= OnResetProgress;
     }
 
     private void OnDestroy()
     {
-        _boer.UpdateView -= UpdateView;
-        _boer.UpdateElectricityView -= UpdateElectricityView;
+        _boer.UpdateView -= OnUpdateView;
+        _boer.UpdateElectricityView -= OnUpdateElectricityView;
+        _boer.ResetProgress -= OnResetProgress;
+    }
+
+    private void OnResetProgress() {
+        _currentProgress = 0;
+
+        UpdateProgressBarValue();
+        UpdateProgressBarColor();
     }
 
     private void ProgressBar()
     {
-        if (_progressBar == null || !_enabledUI) return;
-        _progressBar.value = _currentProgress / _maxProgress;
-
-        if (!_boer.IsMined) return;
+        if (!_isBoerMining) return;
         _currentProgress += Time.fixedDeltaTime;
 
-        if (_fillAreaImage == null) return;
-        _fillAreaImage.color = _progressBarGradient.Evaluate(_currentProgress / _maxProgress);
+        UpdateProgressBarValue();
+        UpdateProgressBarColor();
     }
 
-    private void UpdateView(MinerInfo minerInfo, MinedItem minedItem, uint electricity)
+    private void UpdateProgressBarColor()
+    {
+        if (_fillAreaImage == null) return;
+
+        _fillAreaImage.color = _progressBarGradient.Evaluate(_currentProgress / _maxProgress);
+    }
+    private void UpdateProgressBarValue()
+    {
+        if (_progressBar == null || !_enabledUI) return;
+
+        _progressBar.value = _currentProgress / _maxProgress;
+    }
+
+    private void OnUpdateView(MinerInfo minerInfo, MinedItem minedItem, uint electricity)
     {
         _minerInfo = minerInfo;
         _minedItem = minedItem;
@@ -79,7 +101,7 @@ public class ViewBoerInfo : View
         ShowView();
     }
 
-    private void UpdateElectricityView(uint electricity, uint copacity)
+    private void OnUpdateElectricityView(uint electricity, uint copacity)
     {
         _electricity = electricity;
 

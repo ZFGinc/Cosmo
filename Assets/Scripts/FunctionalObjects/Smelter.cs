@@ -14,6 +14,7 @@ public class Smelter : UsingRecipes, IActionObject
 
     public override event Action<RecipeUserInfo, Item, uint> OnUpdateView;
     public override event Action<uint, uint> OnUpdateElectricityView;
+    public override event Action OnResetProgress;
 
     private void Awake()
     {
@@ -23,11 +24,12 @@ public class Smelter : UsingRecipes, IActionObject
     private void Start()
     {
         UpdateView();
+        ResetProgress();
     }
 
     private void FixedUpdate()
     {
-        if (_pickableObject.IsHold)
+        if (_pickableObject.IsHold && !IsUsingRecipe)
         {
             if (_itemObjects.Count == 0) return;
             foreach (ItemObject itemObject in _itemObjects) itemObject.EnableGravity();
@@ -93,6 +95,11 @@ public class Smelter : UsingRecipes, IActionObject
         OnUpdateElectricityView?.Invoke(_electricity, RecipeUserInfo.ElectricityCopacity);
     }
 
+    protected override void ResetProgress()
+    {
+        OnResetProgress?.Invoke();
+    }
+
     protected override void CheckItems()
     {
         if (_pickableObject.IsHold || IsUsingRecipe) return;
@@ -154,15 +161,19 @@ public class Smelter : UsingRecipes, IActionObject
 
     protected override IEnumerator UsingRecipe()
     {
-        if (_currentRecipe == null) yield return null;
+        if (_currentRecipe == null || !IsHaveElectricity) yield return null;
 
         IsUsingRecipe = true;
         UpdateView();
+        ResetProgress();
         LockItems();
 
         float time = 60 / RecipeUserInfo.SpeedUseRecipe; //value per minute
         yield return new WaitForSeconds(time);
-        if(!IsUsingRecipe || _items.Count == 0) yield return null;
+
+        bool result = TryUsageElectricity(1);
+
+        if(!IsUsingRecipe || _items.Count == 0 || !result) yield return null;
 
         for (int i = 0; i < _currentRecipe.CountProductedItems; i++)
         {
@@ -178,6 +189,8 @@ public class Smelter : UsingRecipes, IActionObject
         _itemObjects.Clear();
 
         IsUsingRecipe = false;
+        ResetProgress();
+
         UpdateView();
     }
 
