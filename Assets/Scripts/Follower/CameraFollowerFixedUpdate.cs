@@ -11,7 +11,7 @@ public class CameraFollowerFixedUpdate: CameraFollower
     private void FixedUpdate()
     {
         Move(Time.fixedDeltaTime);
-        SetCameraZoom();
+        SetCameraZoom(Time.fixedDeltaTime);
     }
 }
 
