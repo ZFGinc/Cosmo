@@ -13,14 +13,15 @@ public class Boer : Miner
     [SerializeField] private Transform _productionSpawnPoint;
     [Space]
     [SerializeField] private Animator _animator;
-    [SerializeField, AnimatorParam("_animator")] private int _animatorTriggerStartMining;
-    [SerializeField, AnimatorParam("_animator")] private int _animatorTriggerEndMining;
+    [SerializeField, ShowIf("IsAnimatorNull"), AnimatorParam("_animator")] private int _animatorTriggerStartMining;
+    [SerializeField, ShowIf("IsAnimatorNull"), AnimatorParam("_animator")] private int _animatorTriggerEndMining;
 
-    public override event Action<MinerInfo, MinedItem, uint> UpdateView;
+    public override event Action<MachineInfo, MinedItem, uint> UpdateView;
     public event Action ResetProgress;
 
     private uint _countOres = 0;
     private MinedItemType _newMinedItemType = MinedItemType.Null;
+    private bool IsAnimatorNull => _animator != null;
 
     private void Start()
     {
@@ -115,7 +116,7 @@ public class Boer : Miner
         GetCountCurrnetItemsAround();
 
         if (IsMiningStarted) return;
-        if (IsMined) return;
+        if (IsWorking) return;
 
         GetOre();
 
@@ -130,20 +131,20 @@ public class Boer : Miner
 
     public override void TryStopMine() 
     {
-        if (!IsMined) return;
+        if (!IsWorking) return;
         StopMine();
     }
 
     public override void StartMine()
     {
-        IsMined = true;
-        StartCoroutine(Mine(MinerInfo.SpeedMining));
+        IsWorking = true;
+        StartCoroutine(Mine(MinerInfo.SpeedWorking));
     }
 
     public override void StopMine()
     {
-        IsMined = false;
-        StopCoroutine(Mine(MinerInfo.SpeedMining));
+        IsWorking = false;
+        StopCoroutine(Mine(MinerInfo.SpeedWorking));
     }
 
     public override IEnumerator Mine(uint countPerMinute)
@@ -155,16 +156,16 @@ public class Boer : Miner
         float time = 60 / countPerMinute; //value per minute
         float timeForCheckIfHerePickUp = time / checkCount;
 
-        while (IsMined && IsHaveElectricity && IsHasProductCopacity() && IsMiningStarted)
+        while (IsWorking && IsHaveElectricity && IsHasProductCopacity() && IsMiningStarted)
         {
             UpdateView?.Invoke(MinerInfo, MinedItemInfo, _electricity);
 
             for (int i = 0; i < checkCount; i++)
             {
                 yield return new WaitForSeconds(timeForCheckIfHerePickUp);
-                if (!IsMined) break;
+                if (!IsWorking) break;
             }
-            if (!IsMined)
+            if (!IsWorking)
             {
                 ResetProgress?.Invoke();
                 break;
@@ -172,14 +173,14 @@ public class Boer : Miner
 
             if (!IsHasProductCopacity())
             {
-                IsMined = false;
+                IsWorking = false;
                 break;
             }
 
             bool result = TryUsageElectricity(1);
             if (!result)
             {
-                IsMined = false;
+                IsWorking = false;
                 break;
             }
 

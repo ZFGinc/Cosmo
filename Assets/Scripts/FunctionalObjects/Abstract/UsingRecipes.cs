@@ -2,42 +2,163 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
 
-public abstract class UsingRecipes : ElectricityConsumer
+[RequireComponent(typeof(PickableObject))]
+public abstract class UsingRecipes : ElectricityConsumer, IMachine
 {
-    [SerializeField] private Transform _pivotForCheckItems;
-    [SerializeField] private Transform _pivotForSpawnNewItem;
-    [SerializeField] private RecipeUserInfo _recipeUserInfo = null;
+    [Foldout("Позиции"), SerializeField] private Transform _pivotForCheckItems;
+    [Foldout("Позиции"), SerializeField] private Transform _pivotForSpawnNewItem;
+    [Space]
+    [Foldout("Инфа о данном приборе"), SerializeField, Expandable] private RecipeUserInfo _recipeUserInfo = null;
+    [Foldout("Инфа о данном приборе"), SerializeField] private TypeRecipeUser _recipeUser;
+    [Space]
+    [Foldout("Настройки области для предметов"), SerializeField] private Vector3 _sizeCubeForCheckItems;
+    [Foldout("Настройки области для предметов"), SerializeField, Min(0f)] private float _additionalDistanceBetweenItems = 0.5f;
 
     protected Transform PivotForCheckItems => _pivotForCheckItems;
     protected Transform PivotForSpawnNewItem => _pivotForSpawnNewItem;
-    protected RecipeUserInfo RecipeUserInfo => _recipeUserInfo;
+    protected MachineInfo RecipeUserInfo => _recipeUserInfo;
 
-    //Инва о текущем состоянии и об объекте
-    public bool IsUsingRecipe = false;
+    [HideInInspector] public bool IsWorking { get; protected set; } = false;
 
-    //Ивенты для обновления View
-    public abstract event Action<RecipeUserInfo, Item, uint> OnUpdateView;
+    public abstract event Action<MachineInfo, Item, uint> OnUpdateView;
     public abstract event Action<uint, uint> OnUpdateElectricityView;
     public abstract event Action OnResetProgress;
 
-    //Текущие предметы и рецепт 
     protected List<Item> _items = new();
     protected List<ItemObject> _itemObjects = new();
     protected Recipe _currentRecipe;
+    protected PickableObject _pickableObject;
 
     public const float RadiusForCheckItemsAroundPivots = 1f;
 
-    protected abstract void CheckItems();
-    protected abstract void UpdateCurrentRecipe();
+    private void Awake()
+    {
+        _pickableObject = GetComponent<PickableObject>();
+    }
+    private void Start()
+    {
+        UpdateView();
+        ResetProgress();
+    }
+    private void FixedUpdate()
+    {
+        if (_pickableObject.IsHold && !IsWorking)
+        {
+            if (_itemObjects.Count == 0) return;
+            foreach (ItemObject itemObject in _itemObjects) itemObject.EnableGravity();
+
+            _items.Clear();
+            _itemObjects.Clear();
+            TryStop();
+            return;
+        }
+
+        SetPositionAndRotationForItemObjects();
+        CheckItems();
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireCube(PivotForCheckItems.position, _sizeCubeForCheckItems);
+    }
+
+    private void SetPositionAndRotationForItemObjects()
+    {
+        for (int i = 0; i < _itemObjects.Count; i++)
+        {
+            float additionalSize = _sizeCubeForCheckItems.x + _additionalDistanceBetweenItems;
+            float startPosition = (PivotForCheckItems.position.x - (additionalSize / 2));
+            float distanceBetweetItems = additionalSize / (RecipeUserInfo.Copacity + 1);
+            float newxPosition = startPosition + distanceBetweetItems * (i + 1);
+            Vector3 newPosition = new Vector3(newxPosition, PivotForCheckItems.position.y, PivotForCheckItems.position.z);
+
+            _itemObjects[i].transform.position = Vector3.Lerp(_itemObjects[i].transform.position, newPosition, Time.deltaTime * 4f);
+            _itemObjects[i].transform.rotation = Quaternion.identity;
+        }
+    }
+    private void UpdateCurrentRecipe()
+    {
+        _currentRecipe = LoaderItemsFromResources.Instance.GetRecipeByNeedItems(_items, _recipeUser);
+    }
+    private void CheckItems()
+    {
+        if (_pickableObject.IsHold || IsWorking) return;
+
+        Collider[] hitColliders = Physics.OverlapBox(PivotForCheckItems.position, _sizeCubeForCheckItems);
+        List<ItemObject> itemObjects = new();
+
+        foreach (Collider collider in hitColliders)
+        {
+            if (collider.gameObject.TryGetComponent(out ItemObject itemObject))
+            {
+                itemObjects.Add(itemObject);
+            }
+        }
+
+        if (itemObjects.Count > RecipeUserInfo.Copacity)
+        {
+            int i = 0;
+            uint countTrying = RecipeUserInfo.Copacity;
+            while (i < itemObjects.Count && countTrying != 0)
+            {
+                countTrying--;
+
+                if (_itemObjects.Contains(itemObjects[i]))
+                {
+                    i++;
+                    continue;
+                }
+
+                itemObjects.RemoveAt(i);
+            }
+        }
+
+        _items.Clear();
+        _itemObjects.Clear();
+
+        foreach (ItemObject itemObject in itemObjects)
+        {
+            _itemObjects.Add(itemObject);
+            _items.Add(itemObject.Item);
+
+            itemObject.DisableGravity();
+
+            if (_itemObjects.Count >= RecipeUserInfo.Copacity) break;
+        }
+
+        UpdateCurrentRecipe();
+        UpdateView();
+        if (_items.Count == 0) TryStop();
+    }
+
+    protected void LockItems()
+    {
+        foreach (var item in _itemObjects)
+        {
+            item.ControllCollisionDetectOff();
+            item.DisableHold();
+            item.transform.parent = null;
+        }
+    }
+    protected bool IsAllObjectNotHold()
+    {
+        foreach (var item in _itemObjects)
+        {
+            if (item.IsHold) return false;
+        }
+        return true;
+    }
+
+    protected abstract IEnumerator UsingRecipe();
+
     protected abstract void UpdateView();
     protected abstract void UpdateElectricityView();
     protected abstract void ResetProgress();
 
     protected abstract void TryStart();
     protected abstract void TryStop();
-
-    protected abstract IEnumerator UsingRecipe();
 
     protected override bool TryUsageElectricity(uint value)
     {

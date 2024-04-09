@@ -16,6 +16,6 @@ MonoBehaviour:
     \u0433\u0438\u043D\u0435\u0440\u0430\u0442\u043E\u0440"
   <Level>k__BackingField: 1
   <Copacity>k__BackingField: 10
-  <SpeedMining>k__BackingField: 20
-  <RadiusMining>k__BackingField: 0
+  <SpeedWorking>k__BackingField: 10
   <ElectricityCopacity>k__BackingField: 10
+  <RadiusMining>k__BackingField: 0

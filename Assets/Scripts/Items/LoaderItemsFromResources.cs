@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Android;
 
 public class LoaderItemsFromResources : MonoBehaviour
 {
@@ -51,23 +49,15 @@ public class LoaderItemsFromResources : MonoBehaviour
         return null;
     }
 
-    public Recipe GetRecipeByEndingItem(Item item)
-    {
-        foreach(var recipe in _recipes)
-        {
-            if(recipe.Item.name == item.name) return recipe;
-        }
-
-        return null;
-    }
-
-    public Recipe GetRecipeByNeedItems(List<Item> needItems)
+    public Recipe GetRecipeByNeedItems(List<Item> needItems, TypeRecipeUser recipeUser)
     {
         if(needItems.Count == 0) return null;
 
         needItems.Sort();
         foreach (var recipe in _recipes)
         {
+            if (recipe.RecipeUser != recipeUser) continue;
+
             recipe.NeedItems.Sort();
             if (needItems.SequenceEqual(recipe.NeedItems)) return recipe;
         }

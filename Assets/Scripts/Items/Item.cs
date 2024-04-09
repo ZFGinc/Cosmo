@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -5,9 +6,8 @@ using UnityEngine;
 public class Item : ScriptableObject, IComparable
 {
     [field: SerializeField] public string Name { get; private set; }
-    [field: SerializeField] public string Description { get; private set; }
-    [field: SerializeField] public Sprite Icon { get; private set; }
-    [field: SerializeField] public ItemObject Prefab { get; private set; }
+    [field: SerializeField, ShowAssetPreview] public Sprite Icon { get; private set; }
+    [field: SerializeField, ShowAssetPreview] public ItemObject Prefab { get; private set; }
 
     public int CompareTo(object obj)
     {

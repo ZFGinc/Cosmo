@@ -11,7 +11,7 @@ public class CameraFollowerUpdate: CameraFollower
     private void Update()
     {
         Move(Time.deltaTime);
-        SetCameraZoom();
+        SetCameraZoom(Time.deltaTime);
     }
 }
 

@@ -13,7 +13,7 @@ public class WindGenerator : ElecticGenerator
 
     private void LateUpdate()
     {
-        if (IsMined && IsHasProductCopacity()) 
+        if (IsWorking && IsHasProductCopacity()) 
             _rotationVisualMined.Rotate(_vectorRotationVisual);
 
     }

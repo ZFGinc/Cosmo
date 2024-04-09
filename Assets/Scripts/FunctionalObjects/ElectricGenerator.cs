@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(PickableObject))]
 public class ElecticGenerator : Miner
 {
-    public override event Action<MinerInfo, MinedItem, uint> UpdateView;
+    public override event Action<MachineInfo, MinedItem, uint> UpdateView;
 
     protected HashSet<IConsumer> _connections = new();
 
@@ -58,10 +58,10 @@ public class ElecticGenerator : Miner
 
     public override void TryStartMine()
     {
-        if(IsMined) return;
+        if(IsWorking) return;
         if (!IsHasProductCopacity())
         {
-            IsMined = false;
+            IsWorking = false;
             return;
         }
 
@@ -70,7 +70,7 @@ public class ElecticGenerator : Miner
 
     public override void TryStopMine() 
     {
-        if (!IsMined) return;
+        if (!IsWorking) return;
         if (!IsHasProductCopacity()) return;
 
         StopMine();
@@ -78,31 +78,31 @@ public class ElecticGenerator : Miner
 
     public override void StartMine()
     {
-        IsMined = true;
-        StartCoroutine(Mine(MinerInfo.SpeedMining));
+        IsWorking = true;
+        StartCoroutine(Mine(MinerInfo.SpeedWorking));
     }
 
     public override void StopMine()
     {
-        IsMined = false;
-        StopCoroutine(Mine(MinerInfo.SpeedMining));
+        IsWorking = false;
+        StopCoroutine(Mine(MinerInfo.SpeedWorking));
     }
 
     public override IEnumerator Mine(uint countPerMinute)
     {
         float time = 60 / countPerMinute; //value per minute
 
-        while (IsMined)
+        while (IsWorking)
         {
             yield return new WaitForSeconds(time);
-            if (!IsMined) break;
+            if (!IsWorking) break;
 
             TryApplyElectricity(1);
 
             if (!IsHasProductCopacity())
             {
                 _electricity = MinerInfo.Copacity;
-                IsMined = false;
+                IsWorking = false;
                 UpdateView?.Invoke(MinerInfo, MinedItemInfo, _electricity);
                 break;
             }

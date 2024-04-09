@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(PickableObject))]
-public abstract class Miner : ElectricityConsumer
+public abstract class Miner : ElectricityConsumer, IMachine
 {
-    public virtual event Action<MinerInfo, MinedItem, uint> UpdateView;
+    public virtual event Action<MachineInfo, MinedItem, uint> UpdateView;
     public virtual event Action<uint, uint> UpdateElectricityView;
 
     [SerializeField] private MinerInfo _minerInfo;
@@ -23,7 +23,7 @@ public abstract class Miner : ElectricityConsumer
     public PickableObject ThisPickableObject => _thisPickableObject;
 
     public bool IsMiningStarted { get; protected set; } = false;
-    public bool IsMined { get => _isMined; protected set { _isMined = value; } }
+    public bool IsWorking { get => _isMined; protected set { _isMined = value; } }
     public uint CurrentItemsCount { get => _currentItemsCount; protected set { _currentItemsCount = value; } }
     public MinedItemType MinedItemType { get => _minedItemType; protected set { _minedItemType = value; } }
     public uint Copacity { get => _minerInfo.Copacity; }
@@ -39,6 +39,8 @@ public abstract class Miner : ElectricityConsumer
 
         float diametr = _minerInfo.RadiusMining * 2;
         _decalProjector.size = new Vector3(diametr, diametr, 10);
+
+
     }
 
     protected void FixedUpdate()
