@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcfb9f3fa370e894cb3f9456ff2cdfb1, type: 3}
+  m_Name: MultiPress_lvl_1
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: "\u041C\u0443\u043B\u044C\u0442\u0438 \u043F\u0440\u0435\u0441\u0441"
+  <Level>k__BackingField: 1
+  <Copacity>k__BackingField: 1
+  <SpeedWorking>k__BackingField: 10
+  <ElectricityCopacity>k__BackingField: 20

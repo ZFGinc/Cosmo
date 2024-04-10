@@ -55,7 +55,7 @@ public abstract class View<T> : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, _radiusShowUINearPlayer);
     }
 
