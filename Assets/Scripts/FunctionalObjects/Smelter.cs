@@ -56,7 +56,7 @@ public class Smelter : UsingRecipes, IActionObject
         UpdateView();
         ResetProgress();
         LockItems();
-        //_animator.SetTrigger(_triggerForStart);
+        _animator.SetTrigger(_triggerForStart);
 
         float time = 60 / RecipeUserInfo.SpeedWorking; //value per minute
         yield return new WaitForSeconds(time);
@@ -82,7 +82,7 @@ public class Smelter : UsingRecipes, IActionObject
         ResetProgress();
         UpdateView();
 
-        //_animator.SetTrigger(_triggerForEnd);
+        _animator.SetTrigger(_triggerForEnd);
     }
 
     public void Action()

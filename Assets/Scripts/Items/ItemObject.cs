@@ -31,7 +31,12 @@ public class ItemObject : MonoBehaviour
         _pickableObject.ControllRigidBody(false);
     }
 
-    public void ControllCollisionDetectOff()
+    public void DisableCanPickUp()
+    {
+        _pickableObject.IsCanPickup = false;
+    }
+
+    public void ControllCollisionDetect()
     {
         _pickableObject.ControllCollisionDetect(false);
     }

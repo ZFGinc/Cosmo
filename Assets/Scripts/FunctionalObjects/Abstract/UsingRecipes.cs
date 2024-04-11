@@ -133,13 +133,12 @@ public abstract class UsingRecipes : ElectricityConsumer, IMachine
         if (_items.Count == 0) TryStop();
     }
 
-    protected void LockItems()
+    protected virtual void LockItems()
     {
         foreach (var item in _itemObjects)
         {
-            item.ControllCollisionDetectOff();
-            item.DisableHold();
-            item.transform.parent = null;
+            item.DisableCanPickUp();
+            item.transform.parent = transform;
         }
     }
     protected bool IsAllObjectNotHold()

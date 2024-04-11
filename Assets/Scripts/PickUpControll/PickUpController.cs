@@ -35,10 +35,26 @@ public class PickUpController: MonoBehaviour
         {
             if(collider.gameObject.TryGetComponent(out IPickable pickableObject))
             {
+                if(!pickableObject.This().GetComponent<ItemObject>()) continue;
+                if(!pickableObject.IsCanPickup) continue;
+
                 _pickableObject = pickableObject;
                 _pickableObject.SetParent(_pickUpCheckerPivot);
                 _pickableObject.SetPickUpController(this);
-                break;
+                return;
+            }
+        }
+
+        foreach (Collider collider in hitColliders)
+        {
+            if (collider.gameObject.TryGetComponent(out IPickable pickableObject))
+            {
+                if (!pickableObject.IsCanPickup) continue;
+
+                _pickableObject = pickableObject;
+                _pickableObject.SetParent(_pickUpCheckerPivot);
+                _pickableObject.SetPickUpController(this);
+                return;
             }
         }
     }

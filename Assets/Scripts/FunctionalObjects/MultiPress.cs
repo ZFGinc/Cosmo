@@ -16,6 +16,17 @@ public class MultiPress : UsingRecipes, IActionObject
 
     private bool IsAnimatorNull => _animator != null;
 
+    protected override void LockItems()
+    {
+        foreach (var item in _itemObjects)
+        {
+            item.DisableCanPickUp();
+            item.EnableGravity();
+            item.ControllCollisionDetect();
+            item.transform.parent = null;
+        }
+    }
+
     protected override void UpdateView()
     {
         if (_currentRecipe == null) OnUpdateView?.Invoke(RecipeUserInfo, null, _electricity);
@@ -56,7 +67,7 @@ public class MultiPress : UsingRecipes, IActionObject
         UpdateView();
         ResetProgress();
         LockItems();
-        //_animator.SetTrigger(_triggerForStart);
+        _animator.SetTrigger(_triggerForStart);
 
         float time = 60 / RecipeUserInfo.SpeedWorking; //value per minute
         yield return new WaitForSeconds(time);
@@ -81,7 +92,7 @@ public class MultiPress : UsingRecipes, IActionObject
         IsWorking = false;
         ResetProgress();
         UpdateView();
-        //_animator.SetTrigger(_triggerForEnd);
+        _animator.SetTrigger(_triggerForEnd);
     }
 
     public void Action()

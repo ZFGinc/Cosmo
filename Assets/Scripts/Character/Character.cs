@@ -81,9 +81,4 @@ public class Character : MonoBehaviour, IControllable
     {
         _pickUpController.TryPickUpObject();
     }
-
-    public void Action()
-    {
-
-    }
 }

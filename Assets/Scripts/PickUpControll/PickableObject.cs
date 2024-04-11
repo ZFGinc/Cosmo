@@ -11,15 +11,16 @@ public class PickableObject : MonoBehaviour, IPickable, IPushObject
     private PickUpController _controller;
 
     public bool IsHold { get; set; } = false;
+    [field: SerializeField] public bool IsCanPickup { get; set; } = true;
 
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody>();
+        IsCanPickup = true;
     }
 
     private void FixedUpdate()
     {
-        if (!IsHold) IsHold = false;
         ControllRigidBody(IsHold);
 
         if (!IsHold) return;
@@ -80,5 +81,7 @@ public class PickableObject : MonoBehaviour, IPickable, IPushObject
         Vector3 direction = transform.position - player.position;
         PushObject(direction);
     }
+
+    public GameObject This() => this.gameObject;
 }
 

@@ -16,11 +16,11 @@ MonoBehaviour:
   renderPassEvent: 350
   outlinesLayerMask:
     serializedVersion: 2
-    m_Bits: 73
+    m_Bits: 9
   outlineSettings:
     outlineColor: {r: 0, g: 0, b: 0, a: 0.8627451}
     outlineScale: 1.5
-    depthThreshold: 13
+    depthThreshold: 75
     robertsCrossMultiplier: 500
     normalThreshold: 0.4
     steepAngleThreshold: 0.2
