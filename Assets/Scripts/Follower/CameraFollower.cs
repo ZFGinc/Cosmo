@@ -14,6 +14,7 @@ public class CameraFollower: Follower
     protected void Start()
     {
         _currentZoom = _zoomScale;
+        transform.parent = null;
     }
 
     protected void SetCameraZoom(float deltaTime)

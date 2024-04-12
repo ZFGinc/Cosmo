@@ -28,15 +28,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             ""id"": ""49c80726-b667-4b7c-845a-c63ce5a32dfb"",
             ""actions"": [
                 {
-                    ""name"": ""MenuButton"",
-                    ""type"": ""Button"",
-                    ""id"": ""4298b2d0-c26b-402b-abcc-1ccee24fcff3"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Movement"",
                     ""type"": ""Value"",
                     ""id"": ""f700a0e1-c433-4502-9071-3bb09b30942f"",
@@ -234,28 +225,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""f8d42e72-14b6-46b4-b89e-0ecd011d7b39"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MenuButton"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bb095197-28b8-4061-b456-d7efc0e938ad"",
-                    ""path"": ""<Gamepad>/start"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MenuButton"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""Keyboard"",
                     ""id"": ""919e3284-53d2-4472-9da6-3ff05fec8446"",
                     ""path"": ""2DVector"",
@@ -324,11 +293,16 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""UserInterface"",
+            ""bindingGroup"": ""UserInterface"",
+            ""devices"": []
+        }
+    ]
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-        m_Gameplay_MenuButton = m_Gameplay.FindAction("MenuButton", throwIfNotFound: true);
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_PickUp = m_Gameplay.FindAction("PickUp", throwIfNotFound: true);
@@ -397,7 +371,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     // Gameplay
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-    private readonly InputAction m_Gameplay_MenuButton;
     private readonly InputAction m_Gameplay_Movement;
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_PickUp;
@@ -409,7 +382,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     {
         private @GameInput m_Wrapper;
         public GameplayActions(@GameInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MenuButton => m_Wrapper.m_Gameplay_MenuButton;
         public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @PickUp => m_Wrapper.m_Gameplay_PickUp;
@@ -426,9 +398,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-            @MenuButton.started += instance.OnMenuButton;
-            @MenuButton.performed += instance.OnMenuButton;
-            @MenuButton.canceled += instance.OnMenuButton;
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
@@ -454,9 +423,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IGameplayActions instance)
         {
-            @MenuButton.started -= instance.OnMenuButton;
-            @MenuButton.performed -= instance.OnMenuButton;
-            @MenuButton.canceled -= instance.OnMenuButton;
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
@@ -495,9 +461,17 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         }
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
+    private int m_UserInterfaceSchemeIndex = -1;
+    public InputControlScheme UserInterfaceScheme
+    {
+        get
+        {
+            if (m_UserInterfaceSchemeIndex == -1) m_UserInterfaceSchemeIndex = asset.FindControlSchemeIndex("UserInterface");
+            return asset.controlSchemes[m_UserInterfaceSchemeIndex];
+        }
+    }
     public interface IGameplayActions
     {
-        void OnMenuButton(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnPickUp(InputAction.CallbackContext context);

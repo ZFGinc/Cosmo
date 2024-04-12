@@ -6,15 +6,6 @@
             "id": "49c80726-b667-4b7c-845a-c63ce5a32dfb",
             "actions": [
                 {
-                    "name": "MenuButton",
-                    "type": "Button",
-                    "id": "4298b2d0-c26b-402b-abcc-1ccee24fcff3",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Movement",
                     "type": "Value",
                     "id": "f700a0e1-c433-4502-9071-3bb09b30942f",
@@ -212,28 +203,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "f8d42e72-14b6-46b4-b89e-0ecd011d7b39",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MenuButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bb095197-28b8-4061-b456-d7efc0e938ad",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MenuButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "Keyboard",
                     "id": "919e3284-53d2-4472-9da6-3ff05fec8446",
                     "path": "2DVector",
@@ -302,5 +271,11 @@
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "UserInterface",
+            "bindingGroup": "UserInterface",
+            "devices": []
+        }
+    ]
 }
