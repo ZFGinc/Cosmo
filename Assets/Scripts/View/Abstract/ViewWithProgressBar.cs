@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
-using TMPro;
-using Unity.VisualScripting;
 
 public abstract class ViewWithProgressBar<T> : View<T>
     where T : IMachine

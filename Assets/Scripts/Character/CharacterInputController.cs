@@ -14,7 +14,7 @@ public class CharacterInputController: MonoBehaviour
     private IControllable _controllable;
     private IActionController _actionConntroller;
 
-    private Quaternion _rotation;
+    private float _currentAngle = 0;
     private float _stepAngle = 45f;
 
     private void Awake()
@@ -24,8 +24,6 @@ public class CharacterInputController: MonoBehaviour
 
         _controllable = GetComponent<IControllable>();
         _actionConntroller = GetComponent<IActionController>();
-
-        _rotation = _cameraFollower.transform.rotation;
 
         if (_controllable == null)
         {
@@ -41,18 +39,25 @@ public class CharacterInputController: MonoBehaviour
         RotateCamera();
     }
 
-    //private 
+    private Vector2 RotateVector2(Vector2 v, float delta)
+    {
+        float sin = Mathf.Sin(delta * Mathf.Deg2Rad);
+        float cos = Mathf.Cos(delta * Mathf.Deg2Rad);
+
+        float tx = v.x;
+        float ty = v.y;
+        v.x = (cos * tx) - (sin * ty);
+        v.y = (sin * tx) + (cos * ty);
+        return v;
+    }
+
 
     private void ReadMovement()
     {
         var inputDirection = _gameInput.Gameplay.Movement.ReadValue<Vector2>();
+        inputDirection = RotateVector2(inputDirection, -_currentAngle);
 
-        inputDirection = new Vector2(
-
-        );
-
-        var direction = new Vector3(inputDirection.x, 0, inputDirection.y);
-
+        Vector3 direction = new Vector3(inputDirection.x, 0, inputDirection.y);
 
         _controllable.Move(direction);
     }
@@ -68,7 +73,7 @@ public class CharacterInputController: MonoBehaviour
 
     private void RotateCamera()
     {
-        _cameraFollower.transform.rotation = Quaternion.Lerp(_cameraFollower.transform.rotation, _rotation, Time.deltaTime * 10);
+        _cameraFollower.transform.rotation = Quaternion.Lerp(_cameraFollower.transform.rotation, Quaternion.Euler(0, _currentAngle, 0), Time.deltaTime * 5);
     }
 
     private void OnEnable()
@@ -118,16 +123,20 @@ public class CharacterInputController: MonoBehaviour
 
     private void OnCameraRotateLeftPerformed(InputAction.CallbackContext obj)
     {
-        Vector3 euler = _rotation.eulerAngles;
-        euler.y -= _stepAngle;
-        _rotation = Quaternion.Euler(euler);
+        _currentAngle -= _stepAngle;
+        CorrectCurrentAngle();
     }
 
     private void OnCameraRotateRightPerformed(InputAction.CallbackContext obj)
     {
-        Vector3 euler = _rotation.eulerAngles;
-        euler.y += _stepAngle;
-        _rotation = Quaternion.Euler(euler);
+        _currentAngle += _stepAngle;
+        CorrectCurrentAngle();
+    }
+
+    private void CorrectCurrentAngle()
+    {
+        if (_currentAngle > 180) _currentAngle -= 360;
+        if (_currentAngle < -180) _currentAngle += 360;
     }
 }
 

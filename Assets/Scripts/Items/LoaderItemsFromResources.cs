@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class LoaderItemsFromResources : MonoBehaviour
 {
-    [field: SerializeField] public List<Item> _items { get; private set; }
-    [field: SerializeField] public List<MinedItem> _minedItems { get; private set; }
-    [field: SerializeField] public List<Recipe> _recipes { get; private set; }
+    [field: SerializeField] public List<Item> Items { get; private set; }
+    [field: SerializeField] public List<MinedItem> MinedItems { get; private set; }
+    [field: SerializeField] public List<Recipe> Recipes { get; private set; }
 
     public static LoaderItemsFromResources Instance { get; private set; }
 
@@ -31,7 +31,7 @@ public class LoaderItemsFromResources : MonoBehaviour
 
     public Item GetItemByName(string name)
     {
-        foreach (var item in _items)
+        foreach (var item in Items)
         {
             if (item.name == name) return item;
         }
@@ -41,7 +41,7 @@ public class LoaderItemsFromResources : MonoBehaviour
 
     public MinedItem GetMinedItemByType(MinedItemType type)
     {
-        foreach (var item in _minedItems)
+        foreach (var item in MinedItems)
         {
             if (item.Type == type) return item;
         }
@@ -54,7 +54,7 @@ public class LoaderItemsFromResources : MonoBehaviour
         if(needItems.Count == 0) return null;
 
         needItems.Sort();
-        foreach (var recipe in _recipes)
+        foreach (var recipe in Recipes)
         {
             if (recipe.RecipeUser != recipeUser) continue;
 

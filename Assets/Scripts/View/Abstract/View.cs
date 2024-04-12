@@ -61,7 +61,7 @@ public abstract class View<T> : MonoBehaviour
 
     private void LookAtCamera()
     {
-        _canvas.LookAt(new Vector3(_canvas.position.x, _camera.position.y, _camera.position.z));
+        _canvas.LookAt(new Vector3(_camera.position.x, _camera.position.y, _camera.position.z));
         _canvas.Rotate(0, 180, 0);
     }
 

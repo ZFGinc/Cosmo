@@ -3,13 +3,13 @@
 public class CameraFollower: Follower
 {
     [Space]
-    [SerializeField, Range(1f,2f)] private float _zoomScale = 1f;
+    [SerializeField, Range(1f,3f)] private float _zoomScale = 1f;
     [SerializeField] private Camera _camera;
 
-    private float _defaultFOV = 60;
+    private float _defaultFOV = 90;
     private float _currentZoom;
 
-    private readonly Vector2 _minMaxZoomScale = new(1f, 2f);
+    private readonly Vector2 _minMaxZoomScale = new(1f, 3f);
 
     protected void Start()
     {
