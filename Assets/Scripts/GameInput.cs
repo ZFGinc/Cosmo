@@ -82,7 +82,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""ItemListingLeft"",
+                    ""name"": ""CameraRotateLeft"",
                     ""type"": ""Button"",
                     ""id"": ""9c9568a7-8de9-45ed-adbe-a2a206a7bd57"",
                     ""expectedControlType"": ""Button"",
@@ -91,7 +91,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ItemListingRight"",
+                    ""name"": ""CameraRotateRight"",
                     ""type"": ""Button"",
                     ""id"": ""62292fa3-c381-485f-8a44-1b39c017738a"",
                     ""expectedControlType"": ""Button"",
@@ -126,7 +126,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ddc46fb5-60b6-4102-8148-a69a8786dc5e"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -192,11 +192,11 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4df7145f-0c67-4915-bccc-f0d8d0e949db"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ItemListingLeft"",
+                    ""action"": ""CameraRotateLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -207,18 +207,18 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ItemListingLeft"",
+                    ""action"": ""CameraRotateLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""d2c39d0a-f5eb-4f29-a0f4-9a4cf61e1b8a"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ItemListingRight"",
+                    ""action"": ""CameraRotateRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -229,7 +229,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ItemListingRight"",
+                    ""action"": ""CameraRotateRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -311,59 +311,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Gamepad"",
-                    ""id"": ""cff678a1-512e-4325-8a6b-03c30c0eb41d"",
-                    ""path"": ""2DVector"",
+                    ""name"": """",
+                    ""id"": ""d5d05ba6-741c-4b7e-8680-de868c8bde72"",
+                    ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Movement"",
-                    ""isComposite"": true,
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""068ec25b-bb3d-42ce-8c02-08a4e4c65cf6"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""af06a81e-7d7b-40d1-8657-dea6666d5e0b"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""dbf60f89-a7fe-4433-b2b3-a4834dd8e15d"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""d5567d6d-0e50-4823-9db9-9a032ff689df"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -378,8 +334,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Gameplay_PickUp = m_Gameplay.FindAction("PickUp", throwIfNotFound: true);
         m_Gameplay_Action = m_Gameplay.FindAction("Action", throwIfNotFound: true);
         m_Gameplay_CameraZoom = m_Gameplay.FindAction("CameraZoom", throwIfNotFound: true);
-        m_Gameplay_ItemListingLeft = m_Gameplay.FindAction("ItemListingLeft", throwIfNotFound: true);
-        m_Gameplay_ItemListingRight = m_Gameplay.FindAction("ItemListingRight", throwIfNotFound: true);
+        m_Gameplay_CameraRotateLeft = m_Gameplay.FindAction("CameraRotateLeft", throwIfNotFound: true);
+        m_Gameplay_CameraRotateRight = m_Gameplay.FindAction("CameraRotateRight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -447,8 +403,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_PickUp;
     private readonly InputAction m_Gameplay_Action;
     private readonly InputAction m_Gameplay_CameraZoom;
-    private readonly InputAction m_Gameplay_ItemListingLeft;
-    private readonly InputAction m_Gameplay_ItemListingRight;
+    private readonly InputAction m_Gameplay_CameraRotateLeft;
+    private readonly InputAction m_Gameplay_CameraRotateRight;
     public struct GameplayActions
     {
         private @GameInput m_Wrapper;
@@ -459,8 +415,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @PickUp => m_Wrapper.m_Gameplay_PickUp;
         public InputAction @Action => m_Wrapper.m_Gameplay_Action;
         public InputAction @CameraZoom => m_Wrapper.m_Gameplay_CameraZoom;
-        public InputAction @ItemListingLeft => m_Wrapper.m_Gameplay_ItemListingLeft;
-        public InputAction @ItemListingRight => m_Wrapper.m_Gameplay_ItemListingRight;
+        public InputAction @CameraRotateLeft => m_Wrapper.m_Gameplay_CameraRotateLeft;
+        public InputAction @CameraRotateRight => m_Wrapper.m_Gameplay_CameraRotateRight;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -488,12 +444,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @CameraZoom.started += instance.OnCameraZoom;
             @CameraZoom.performed += instance.OnCameraZoom;
             @CameraZoom.canceled += instance.OnCameraZoom;
-            @ItemListingLeft.started += instance.OnItemListingLeft;
-            @ItemListingLeft.performed += instance.OnItemListingLeft;
-            @ItemListingLeft.canceled += instance.OnItemListingLeft;
-            @ItemListingRight.started += instance.OnItemListingRight;
-            @ItemListingRight.performed += instance.OnItemListingRight;
-            @ItemListingRight.canceled += instance.OnItemListingRight;
+            @CameraRotateLeft.started += instance.OnCameraRotateLeft;
+            @CameraRotateLeft.performed += instance.OnCameraRotateLeft;
+            @CameraRotateLeft.canceled += instance.OnCameraRotateLeft;
+            @CameraRotateRight.started += instance.OnCameraRotateRight;
+            @CameraRotateRight.performed += instance.OnCameraRotateRight;
+            @CameraRotateRight.canceled += instance.OnCameraRotateRight;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -516,12 +472,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @CameraZoom.started -= instance.OnCameraZoom;
             @CameraZoom.performed -= instance.OnCameraZoom;
             @CameraZoom.canceled -= instance.OnCameraZoom;
-            @ItemListingLeft.started -= instance.OnItemListingLeft;
-            @ItemListingLeft.performed -= instance.OnItemListingLeft;
-            @ItemListingLeft.canceled -= instance.OnItemListingLeft;
-            @ItemListingRight.started -= instance.OnItemListingRight;
-            @ItemListingRight.performed -= instance.OnItemListingRight;
-            @ItemListingRight.canceled -= instance.OnItemListingRight;
+            @CameraRotateLeft.started -= instance.OnCameraRotateLeft;
+            @CameraRotateLeft.performed -= instance.OnCameraRotateLeft;
+            @CameraRotateLeft.canceled -= instance.OnCameraRotateLeft;
+            @CameraRotateRight.started -= instance.OnCameraRotateRight;
+            @CameraRotateRight.performed -= instance.OnCameraRotateRight;
+            @CameraRotateRight.canceled -= instance.OnCameraRotateRight;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -547,7 +503,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnPickUp(InputAction.CallbackContext context);
         void OnAction(InputAction.CallbackContext context);
         void OnCameraZoom(InputAction.CallbackContext context);
-        void OnItemListingLeft(InputAction.CallbackContext context);
-        void OnItemListingRight(InputAction.CallbackContext context);
+        void OnCameraRotateLeft(InputAction.CallbackContext context);
+        void OnCameraRotateRight(InputAction.CallbackContext context);
     }
 }

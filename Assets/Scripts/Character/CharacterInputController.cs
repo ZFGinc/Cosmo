@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,9 @@ public class CharacterInputController: MonoBehaviour
     private IControllable _controllable;
     private IActionController _actionConntroller;
 
+    private Quaternion _rotation;
+    private float _stepAngle = 45f;
+
     private void Awake()
     {
         _gameInput = new GameInput();
@@ -20,6 +24,8 @@ public class CharacterInputController: MonoBehaviour
 
         _controllable = GetComponent<IControllable>();
         _actionConntroller = GetComponent<IActionController>();
+
+        _rotation = _cameraFollower.transform.rotation;
 
         if (_controllable == null)
         {
@@ -31,12 +37,22 @@ public class CharacterInputController: MonoBehaviour
     {
         ReadMovement();
         ReadCameraZoom();
+
+        RotateCamera();
     }
+
+    //private 
 
     private void ReadMovement()
     {
         var inputDirection = _gameInput.Gameplay.Movement.ReadValue<Vector2>();
+
+        inputDirection = new Vector2(
+
+        );
+
         var direction = new Vector3(inputDirection.x, 0, inputDirection.y);
+
 
         _controllable.Move(direction);
     }
@@ -50,14 +66,19 @@ public class CharacterInputController: MonoBehaviour
         _cameraFollower.ApplyZoomScale(inputZoom/(1000/_zoomMultiply));
     }
 
+    private void RotateCamera()
+    {
+        _cameraFollower.transform.rotation = Quaternion.Lerp(_cameraFollower.transform.rotation, _rotation, Time.deltaTime * 10);
+    }
+
     private void OnEnable()
     {
         _gameInput.Gameplay.Jump.performed += OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed += OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed += OnActionPerformed;
 
-        _gameInput.Gameplay.ItemListingLeft.performed += OnItemListingLeftPerformed;
-        _gameInput.Gameplay.ItemListingRight.performed += OnItemListingRightPerformed;
+        _gameInput.Gameplay.CameraRotateLeft.performed += OnCameraRotateLeftPerformed;
+        _gameInput.Gameplay.CameraRotateRight.performed += OnCameraRotateRightPerformed;
     }
 
     private void OnDestroy()
@@ -66,8 +87,8 @@ public class CharacterInputController: MonoBehaviour
         _gameInput.Gameplay.PickUp.performed -= OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed -= OnActionPerformed;
 
-        _gameInput.Gameplay.ItemListingLeft.performed -= OnItemListingLeftPerformed;
-        _gameInput.Gameplay.ItemListingRight.performed -= OnItemListingRightPerformed;
+        _gameInput.Gameplay.CameraRotateLeft.performed -= OnCameraRotateLeftPerformed;
+        _gameInput.Gameplay.CameraRotateRight.performed -= OnCameraRotateRightPerformed;
     }
 
     private void OnDisable()
@@ -76,8 +97,8 @@ public class CharacterInputController: MonoBehaviour
         _gameInput.Gameplay.PickUp.performed -= OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed -= OnActionPerformed;
 
-        _gameInput.Gameplay.ItemListingLeft.performed -= OnItemListingLeftPerformed;
-        _gameInput.Gameplay.ItemListingRight.performed -= OnItemListingRightPerformed;
+        _gameInput.Gameplay.CameraRotateLeft.performed -= OnCameraRotateLeftPerformed;
+        _gameInput.Gameplay.CameraRotateRight.performed -= OnCameraRotateRightPerformed;
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext obj)
@@ -95,14 +116,18 @@ public class CharacterInputController: MonoBehaviour
         _actionConntroller.Action();
     }
 
-    private void OnItemListingLeftPerformed(InputAction.CallbackContext obj)
+    private void OnCameraRotateLeftPerformed(InputAction.CallbackContext obj)
     {
-        _actionConntroller.LeftSwipe();
+        Vector3 euler = _rotation.eulerAngles;
+        euler.y -= _stepAngle;
+        _rotation = Quaternion.Euler(euler);
     }
 
-    private void OnItemListingRightPerformed(InputAction.CallbackContext obj)
+    private void OnCameraRotateRightPerformed(InputAction.CallbackContext obj)
     {
-        _actionConntroller.RightSwipe();
+        Vector3 euler = _rotation.eulerAngles;
+        euler.y += _stepAngle;
+        _rotation = Quaternion.Euler(euler);
     }
 }
 

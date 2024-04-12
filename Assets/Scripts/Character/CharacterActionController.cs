@@ -44,20 +44,4 @@ public class CharacterActionController : MonoBehaviour, IActionController
 
         action.Action();    
     }
-
-    public void LeftSwipe()
-    {
-        IActionSwipeObject action = TryGetActionObject<IActionSwipeObject>();
-        if (action == null) return;
-
-        action.LeftSwipe();
-    }
-
-    public void RightSwipe()
-    {
-        IActionSwipeObject action = TryGetActionObject<IActionSwipeObject>();
-        if (action == null) return;
-
-        action.RightSwipe();
-    }
 }

@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 
-[RequireComponent (typeof(Camera))]
 public class CameraFollower: Follower
 {
     [Space]
     [SerializeField, Range(1f,2f)] private float _zoomScale = 1f;
+    [SerializeField] private Camera _camera;
 
-    private Camera _camera;
     private float _defaultFOV = 60;
     private float _currentZoom;
 
@@ -14,7 +13,6 @@ public class CameraFollower: Follower
 
     protected void Start()
     {
-        _camera = GetComponent<Camera>();
         _currentZoom = _zoomScale;
     }
 

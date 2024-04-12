@@ -60,7 +60,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ItemListingLeft",
+                    "name": "CameraRotateLeft",
                     "type": "Button",
                     "id": "9c9568a7-8de9-45ed-adbe-a2a206a7bd57",
                     "expectedControlType": "Button",
@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ItemListingRight",
+                    "name": "CameraRotateRight",
                     "type": "Button",
                     "id": "62292fa3-c381-485f-8a44-1b39c017738a",
                     "expectedControlType": "Button",
@@ -104,7 +104,7 @@
                 {
                     "name": "",
                     "id": "ddc46fb5-60b6-4102-8148-a69a8786dc5e",
-                    "path": "<Keyboard>/e",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -170,11 +170,11 @@
                 {
                     "name": "",
                     "id": "4df7145f-0c67-4915-bccc-f0d8d0e949db",
-                    "path": "<Keyboard>/leftArrow",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ItemListingLeft",
+                    "action": "CameraRotateLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -185,18 +185,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ItemListingLeft",
+                    "action": "CameraRotateLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "d2c39d0a-f5eb-4f29-a0f4-9a4cf61e1b8a",
-                    "path": "<Keyboard>/rightArrow",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ItemListingRight",
+                    "action": "CameraRotateRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -207,7 +207,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ItemListingRight",
+                    "action": "CameraRotateRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -289,59 +289,15 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Gamepad",
-                    "id": "cff678a1-512e-4325-8a6b-03c30c0eb41d",
-                    "path": "2DVector",
+                    "name": "",
+                    "id": "d5d05ba6-741c-4b7e-8680-de868c8bde72",
+                    "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Movement",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "068ec25b-bb3d-42ce-8c02-08a4e4c65cf6",
-                    "path": "<Gamepad>/leftStick/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "af06a81e-7d7b-40d1-8657-dea6666d5e0b",
-                    "path": "<Gamepad>/leftStick/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "dbf60f89-a7fe-4433-b2b3-a4834dd8e15d",
-                    "path": "<Gamepad>/leftStick/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "d5567d6d-0e50-4823-9db9-9a032ff689df",
-                    "path": "<Gamepad>/leftStick/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 }
             ]
         }

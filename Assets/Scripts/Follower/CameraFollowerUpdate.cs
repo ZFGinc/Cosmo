@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[RequireComponent (typeof(Camera))]
 public class CameraFollowerUpdate: CameraFollower
 {
     protected new void Start()
