@@ -17,8 +17,4 @@ MonoBehaviour:
   password: vcRxhKH35VahuLOztCGITrX+9nrjikUtvAS5ODYoWlFdh8brXh8gRi8gv3DZDmZMI7HKtJ1gurRe3retIdorFZmzXb3SKGENnX1xhuTc6xU+/swYkRj5TxnTrxSY1Bac
   targetApp: 480
   lastDepot: 0
-  depots:
-  - name: Cosmo Cats
-    id: 480
-    target: 5
-    extension: 
+  depots: []

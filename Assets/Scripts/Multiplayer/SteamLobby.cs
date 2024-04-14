@@ -5,7 +5,7 @@ using Steamworks;
 [RequireComponent(typeof(CustomNetworkManager))]
 public class SteamLobby : MonoBehaviour
 {
-    public ulong CurrentLobbyId {get; private set;}
+    public ulong CurrentLobbyId { get; private set; } = 0;
 
     protected Callback<LobbyCreated_t> LobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> JoinRequest;
@@ -23,8 +23,6 @@ public class SteamLobby : MonoBehaviour
         LobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
         JoinRequest = Callback<GameLobbyJoinRequested_t>.Create(OnJoinRequest);
         LobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
-
-        HostLobby();
     }
 
     private void OnLobbyCreated(LobbyCreated_t callback)
@@ -71,6 +69,21 @@ public class SteamLobby : MonoBehaviour
 
     public void HostLobby()
     {
+        if (CurrentLobbyId != 0) LeaveLobby();
+
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, _networkManager.maxConnections);
+    }
+
+    public void LeaveLobby()
+    {
+        if (CurrentLobbyId == 0) return;
+        
+        SteamMatchmaking.LeaveLobby(new CSteamID(CurrentLobbyId));
+        CurrentLobbyId = 0;
+    }
+
+    public void ConnectToFriend()
+    {
+        SteamFriends.ActivateGameOverlay("friends");
     }
 }
