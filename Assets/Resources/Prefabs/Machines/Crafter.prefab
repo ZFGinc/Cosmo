@@ -2026,7 +2026,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9532
+  m_VersionIndex: 9541
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3450,7 +3450,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 9469
+  m_VersionIndex: 9478
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -4020,8 +4020,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52809f2bb208a7b41a540fe75e6e07f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 1
-  syncMode: 0
+  syncDirection: 0
+  syncMode: 1
   syncInterval: 0
   _isCanPush: 0
   <IsCanPickup>k__BackingField: 0
@@ -4037,8 +4037,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 389e7d41411cf704faf9c6ec1ac0b05c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
+  syncDirection: 1
+  syncMode: 1
   syncInterval: 0
   _pivotForCheckItems: {fileID: 4387121602251155072}
   _pivotForSpawnNewItem: {fileID: 2834962163120412189}
@@ -4141,7 +4141,7 @@ MonoBehaviour:
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 1
-  coordinateSpace: 1
+  coordinateSpace: 0
   sendIntervalMultiplier: 1
   timelineOffset: 0
   showGizmos: 0

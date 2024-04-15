@@ -945,8 +945,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52809f2bb208a7b41a540fe75e6e07f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 1
-  syncMode: 0
+  syncDirection: 0
+  syncMode: 1
   syncInterval: 0
   _isCanPush: 0
   <IsCanPickup>k__BackingField: 0
@@ -962,8 +962,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da46b92de55b4084db84825bdceb494f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
+  syncDirection: 1
+  syncMode: 1
   syncInterval: 0
   _pivotForCheckItems: {fileID: 1314520233260189041}
   _pivotForSpawnNewItem: {fileID: 96594399889752910}
@@ -972,7 +972,7 @@ MonoBehaviour:
   _sizeCubeForCheckItems: {x: 1.5, y: 0.6, z: 1}
   _additionalDistanceBetweenItems: 0
   _animator: {fileID: 444351839646857824}
-  _networkAnimator: {fileID: 0}
+  _networkAnimator: {fileID: 7120783181403907437}
   _triggerForStart: -1619438193
   _triggerForEnd: 16528305
 --- !u!114 &5735315715941228752
@@ -1066,7 +1066,7 @@ MonoBehaviour:
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 1
-  coordinateSpace: 1
+  coordinateSpace: 0
   sendIntervalMultiplier: 1
   timelineOffset: 0
   showGizmos: 0
