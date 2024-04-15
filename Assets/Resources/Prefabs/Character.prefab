@@ -153,7 +153,7 @@ GameObject:
   - component: {fileID: 4769782451314066886}
   - component: {fileID: 5182869406497262499}
   - component: {fileID: 8394845635297301785}
-  - component: {fileID: -4245665312235324074}
+  - component: {fileID: 3918230048391637687}
   m_Layer: 3
   m_Name: Character
   m_TagString: Player
@@ -252,6 +252,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4287b0df7b98240ad7388bbcc25fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   _pickUpCheckerPivot: {fileID: 1966592183706845481}
   _radiusChechActionObjects: 1.5
 --- !u!114 &4769782451314066886
@@ -308,7 +311,7 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 2
   hasSpawned: 0
---- !u!114 &-4245665312235324074
+--- !u!114 &3918230048391637687
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -317,7 +320,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2165969496644282791}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
+  m_Script: {fileID: 11500000, guid: a553cb17010b2403e8523b558bffbc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1
@@ -338,10 +341,11 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
-  onlySyncOnChangeCorrectionMultiplier: 2
+  bufferResetMultiplier: 3
+  changedDetection: 1
+  positionSensitivity: 0.01
   rotationSensitivity: 0.01
-  positionPrecision: 0.01
-  scalePrecision: 0.01
+  scaleSensitivity: 0.01
 --- !u!1 &2207269950986386004
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,6 +845,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1966592183706845481}
+  - component: {fileID: 8904101052677280025}
   m_Layer: 3
   m_Name: PickablePivot
   m_TagString: Untagged
@@ -863,3 +868,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 891589318988413400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8904101052677280025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8205075237101618259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a553cb17010b2403e8523b558bffbc14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 1
+  syncInterval: 0
+  target: {fileID: 1966592183706845481}
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  onlySyncOnChange: 1
+  compressRotation: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 0
+  coordinateSpace: 1
+  sendIntervalMultiplier: 1
+  timelineOffset: 0
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  bufferResetMultiplier: 3
+  changedDetection: 1
+  positionSensitivity: 0.01
+  rotationSensitivity: 0.01
+  scaleSensitivity: 0.01

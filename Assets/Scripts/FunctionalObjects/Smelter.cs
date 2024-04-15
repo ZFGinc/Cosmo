@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using UnityEngine;
 using NaughtyAttributes;
+using Mirror;
 
 public class Smelter : UsingRecipes, IActionObject
 {
     [Space]
     [Foldout("Анимации"), SerializeField] private Animator _animator;
+    [Foldout("Анимации"), SerializeField] private NetworkAnimator _networkAnimator;
     [Foldout("Анимации"), ShowIf("IsAnimatorNull"), SerializeField, AnimatorParam("_animator")] private int _triggerForStart;
     [Foldout("Анимации"), ShowIf("IsAnimatorNull"), SerializeField, AnimatorParam("_animator")] private int _triggerForEnd;
 
@@ -57,6 +59,7 @@ public class Smelter : UsingRecipes, IActionObject
         ResetProgress();
         LockItems();
         _animator.SetTrigger(_triggerForStart);
+        _networkAnimator.SetTrigger(_triggerForStart);
 
         float time = 60 / RecipeUserInfo.SpeedWorking; //value per minute
         yield return new WaitForSeconds(time);
@@ -83,6 +86,7 @@ public class Smelter : UsingRecipes, IActionObject
         UpdateView();
 
         _animator.SetTrigger(_triggerForEnd);
+        _networkAnimator.SetTrigger(_triggerForEnd);
     }
 
     public void Action()
