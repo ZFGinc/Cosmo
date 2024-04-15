@@ -17,28 +17,19 @@ public class CharacterInputController: NetworkBehaviour
     private float _currentAngle = 0;
     private float _stepAngle = 45f;
 
+    private bool _isLocalPlayer = false;
+
     private void Start()
     {
-        if (isLocalPlayer)
-        {
-            _gameInput = new GameInput();
-            _gameInput.Enable();
+        _isLocalPlayer = isLocalPlayer;
 
-            _controllable = GetComponent<IControllable>();
-            _actionConntroller = GetComponent<IActionController>();
-
-            _cameraFollower.gameObject.SetActive(true);
-
-            if (_controllable == null)
-            {
-                throw new Exception("Чет какая-то хуйня получается");
-            }
-        }
+        Initialize();
+        SubscripbeInputActions();
     }
 
     private void Update()
     {
-        if (isLocalPlayer)
+        if (_isLocalPlayer)
         {
             ReadMovement();
             ReadCameraZoom();
@@ -59,6 +50,23 @@ public class CharacterInputController: NetworkBehaviour
         return v;
     }
 
+    private void Initialize()
+    {
+        if (!_isLocalPlayer) return;
+
+        _gameInput = new GameInput();
+        _gameInput.Enable();
+
+        _controllable = GetComponent<IControllable>();
+        _actionConntroller = GetComponent<IActionController>();
+
+        _cameraFollower.gameObject.SetActive(true);
+
+        if (_controllable == null)
+        {
+            throw new Exception("Чет какая-то хуйня получается");
+        }
+    }
 
     private void ReadMovement()
     {
@@ -84,11 +92,6 @@ public class CharacterInputController: NetworkBehaviour
         _cameraFollower.transform.rotation = Quaternion.Lerp(_cameraFollower.transform.rotation, Quaternion.Euler(0, _currentAngle, 0), Time.deltaTime * 5);
     }
 
-    private void OnEnable()
-    {
-        SubscripbeInputActions();
-    }
-
     private void OnDestroy()
     {
         UnscripbeInputActions();
@@ -101,8 +104,8 @@ public class CharacterInputController: NetworkBehaviour
 
     private void SubscripbeInputActions()
     {
-        if (!isLocalPlayer) return;
-
+        if (!_isLocalPlayer) return;
+     
         _gameInput.Gameplay.Jump.performed += OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed += OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed += OnActionPerformed;
@@ -113,7 +116,7 @@ public class CharacterInputController: NetworkBehaviour
 
     private void UnscripbeInputActions()
     {
-        if (!isLocalPlayer) return;
+        if (!_isLocalPlayer) return;
 
         _gameInput.Gameplay.Jump.performed -= OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed -= OnPickUpPerformed;

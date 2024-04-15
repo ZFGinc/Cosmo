@@ -59,8 +59,19 @@ public abstract class View<T> : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, _radiusShowUINearPlayer);
     }
 
+    private void TryGetCamera()
+    {
+        if(Camera.allCameras.Length == 0) return;
+        _camera = Camera.main.transform;
+    }
+
     private void LookAtCamera()
     {
+        if (_camera == null) {
+            TryGetCamera();
+            return; 
+        }
+
         _canvas.LookAt(new Vector3(_camera.position.x, _camera.position.y, _camera.position.z));
         _canvas.Rotate(0, 180, 0);
     }
