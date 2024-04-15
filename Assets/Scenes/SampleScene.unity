@@ -7210,7 +7210,7 @@ PrefabInstance:
     - target: {fileID: 8244345763553651026, guid: 2cde6064fea6f5d4cb2ab6897f373e7e,
         type: 3}
       propertyPath: coordinateSpace
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -44714,11 +44714,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RackPower
-      objectReference: {fileID: 0}
-    - target: {fileID: 8244345763553651026, guid: 2cde6064fea6f5d4cb2ab6897f373e7e,
-        type: 3}
-      propertyPath: coordinateSpace
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
