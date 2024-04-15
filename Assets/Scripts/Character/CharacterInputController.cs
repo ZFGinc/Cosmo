@@ -1,11 +1,11 @@
-﻿using System;
-using Unity.VisualScripting;
+﻿using Mirror;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(IControllable))]
 [RequireComponent(typeof(IActionController))]
-public class CharacterInputController: MonoBehaviour
+public class CharacterInputController: NetworkBehaviour
 {
     [SerializeField] private CameraFollower _cameraFollower;
     [SerializeField] private float _zoomMultiply = 10; 
@@ -17,26 +17,34 @@ public class CharacterInputController: MonoBehaviour
     private float _currentAngle = 0;
     private float _stepAngle = 45f;
 
-    private void Awake()
+    private void Start()
     {
-        _gameInput = new GameInput();
-        _gameInput.Enable();
-
-        _controllable = GetComponent<IControllable>();
-        _actionConntroller = GetComponent<IActionController>();
-
-        if (_controllable == null)
+        if (isLocalPlayer)
         {
-            throw new Exception("Чет какая-то хуйня получается");
+            _gameInput = new GameInput();
+            _gameInput.Enable();
+
+            _controllable = GetComponent<IControllable>();
+            _actionConntroller = GetComponent<IActionController>();
+
+            _cameraFollower.gameObject.SetActive(true);
+
+            if (_controllable == null)
+            {
+                throw new Exception("Чет какая-то хуйня получается");
+            }
         }
     }
 
     private void Update()
     {
-        ReadMovement();
-        ReadCameraZoom();
+        if (isLocalPlayer)
+        {
+            ReadMovement();
+            ReadCameraZoom();
 
-        RotateCamera();
+            RotateCamera();
+        }
     }
 
     private Vector2 RotateVector2(Vector2 v, float delta)
@@ -78,6 +86,23 @@ public class CharacterInputController: MonoBehaviour
 
     private void OnEnable()
     {
+        SubscripbeInputActions();
+    }
+
+    private void OnDestroy()
+    {
+        UnscripbeInputActions();
+    }
+
+    private void OnDisable()
+    {
+        UnscripbeInputActions();
+    }
+
+    private void SubscripbeInputActions()
+    {
+        if (!isLocalPlayer) return;
+
         _gameInput.Gameplay.Jump.performed += OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed += OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed += OnActionPerformed;
@@ -86,18 +111,10 @@ public class CharacterInputController: MonoBehaviour
         _gameInput.Gameplay.CameraRotateRight.performed += OnCameraRotateRightPerformed;
     }
 
-    private void OnDestroy()
+    private void UnscripbeInputActions()
     {
-        _gameInput.Gameplay.Jump.performed -= OnJumpPerformed;
-        _gameInput.Gameplay.PickUp.performed -= OnPickUpPerformed;
-        _gameInput.Gameplay.Action.performed -= OnActionPerformed;
+        if (!isLocalPlayer) return;
 
-        _gameInput.Gameplay.CameraRotateLeft.performed -= OnCameraRotateLeftPerformed;
-        _gameInput.Gameplay.CameraRotateRight.performed -= OnCameraRotateRightPerformed;
-    }
-
-    private void OnDisable()
-    {
         _gameInput.Gameplay.Jump.performed -= OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed -= OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed -= OnActionPerformed;
