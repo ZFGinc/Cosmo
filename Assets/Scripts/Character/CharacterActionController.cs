@@ -1,10 +1,16 @@
 using Mirror;
 using UnityEngine;
 
-public class CharacterActionController : MonoBehaviour, IActionController
+public class CharacterActionController : NetworkBehaviour, IActionController
 {
     [SerializeField] private Transform _pickUpCheckerPivot;
     [SerializeField] private float _radiusChechActionObjects;
+
+    private void Start()
+    {
+        if(!isLocalPlayer) enabled = false;
+
+    }
 
     private void OnDrawGizmos()
     {
