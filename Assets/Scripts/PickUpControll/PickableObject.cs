@@ -1,16 +1,18 @@
-﻿using UnityEngine;
+﻿using Mirror;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PickableObject : MonoBehaviour, IPickable, IPushObject
+public class PickableObject : NetworkBehaviour, IPickable, IPushObject
 {
     [SerializeField] private bool _isCanPush = false;
 
+    [SyncVar] private bool _isHold = false;
     private float _speedMove = 5f;
     private float _speedRotation = 300f;
     private Rigidbody _rigidBody;
     private PickUpController _controller;
 
-    public bool IsHold { get; set; } = false;
+    public bool IsHold { get=>_isHold; set => _isHold=value; }
     [field: SerializeField] public bool IsCanPickup { get; set; } = true;
 
     private void Awake()

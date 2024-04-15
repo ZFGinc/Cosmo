@@ -8,6 +8,8 @@ public abstract class Follower : MonoBehaviour
 
     protected void Move(float deltaTime)
     {
+        if (_target == null) Destroy(gameObject);
+        
         var nextPosition = Vector3.Lerp(transform.position, _target.position + _offset, deltaTime * _smoothing);
 
         transform.position = nextPosition;

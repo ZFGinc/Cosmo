@@ -827,8 +827,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52809f2bb208a7b41a540fe75e6e07f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
   _isCanPush: 0
-  <IsCanPickup>k__BackingField: 1
+  <IsCanPickup>k__BackingField: 0
 --- !u!114 &5970004324234646985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -866,9 +869,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca014b26cbad36b4d8c1baa79516c89d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
   _camera: {fileID: 0}
   _canvas: {fileID: 4477131354601929538}
   _textNamePlusLevel: {fileID: 5276356241242696969}

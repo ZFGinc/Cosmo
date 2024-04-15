@@ -13,6 +13,11 @@ PrefabInstance:
       propertyPath: coordinateSpace
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2110852802500713078, guid: 6936635b4f317eb4a93df4f2dfd17f57,
+        type: 3}
+      propertyPath: syncDirection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3927555562228777274, guid: 6936635b4f317eb4a93df4f2dfd17f57,
         type: 3}
       propertyPath: m_LocalScale.x

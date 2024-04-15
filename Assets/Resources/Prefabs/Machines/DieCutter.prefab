@@ -945,8 +945,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52809f2bb208a7b41a540fe75e6e07f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
   _isCanPush: 0
-  <IsCanPickup>k__BackingField: 1
+  <IsCanPickup>k__BackingField: 0
 --- !u!114 &4405256923846315515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,6 +972,7 @@ MonoBehaviour:
   _sizeCubeForCheckItems: {x: 1.5, y: 0.6, z: 1}
   _additionalDistanceBetweenItems: 0
   _animator: {fileID: 444351839646857824}
+  _networkAnimator: {fileID: 0}
   _triggerForStart: -1619438193
   _triggerForEnd: 16528305
 --- !u!114 &5735315715941228752
