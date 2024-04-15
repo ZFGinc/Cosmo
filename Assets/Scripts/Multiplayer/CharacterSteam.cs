@@ -1,12 +1,16 @@
 using Mirror;
 using Steamworks;
+using TMPro;
+using UnityEngine;
 
 public class CharacterSteam : NetworkBehaviour
 {
-    [SyncVar] public int ConnectionID;
-    [SyncVar] public int PlayerIdNumber;
-    [SyncVar] public ulong PlayerSteamID;
-    [SyncVar(hook = nameof(PlayerNameUpdate))] public string PlayerName;
+    [SerializeField] private TMP_Text _textPlayerName;
+    [Space(10)]
+    [SyncVar, HideInInspector] public int ConnectionID;
+    [SyncVar, HideInInspector] public int PlayerIdNumber;
+    [SyncVar, HideInInspector] public ulong PlayerSteamID;
+    [SyncVar(hook = nameof(PlayerNameUpdate)), HideInInspector] public string PlayerName;
 
     private CustomNetworkManager _networkManager;
 
@@ -51,11 +55,14 @@ public class CharacterSteam : NetworkBehaviour
         if (isServer)
         {
             this.PlayerName = newValue;
+            _textPlayerName.gameObject.SetActive(false);
         }
 
         if (isClient)
         {
             LobbyController.Instance.UpdatePlayerList();
         }
+
+        _textPlayerName.text = newValue;
     }
 }

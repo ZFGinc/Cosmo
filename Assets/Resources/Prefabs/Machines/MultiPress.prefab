@@ -1268,6 +1268,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86509c2a0a8118b4ead5b5647a5ce888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   _camera: {fileID: 0}
   _canvas: {fileID: 3678661317720735038}
   _textNamePlusLevel: {fileID: 5455639529597190762}

@@ -29,13 +29,12 @@ public class CharacterInputController: NetworkBehaviour
 
     private void Update()
     {
-        if (_isLocalPlayer)
-        {
-            ReadMovement();
-            ReadCameraZoom();
+        if (!_isLocalPlayer) return;
+        
+        ReadMovement();
+        ReadCameraZoom();
 
-            RotateCamera();
-        }
+        RotateCamera();
     }
 
     private Vector2 RotateVector2(Vector2 v, float delta)
@@ -52,7 +51,11 @@ public class CharacterInputController: NetworkBehaviour
 
     private void Initialize()
     {
-        if (!_isLocalPlayer) return;
+        if (!_isLocalPlayer)
+        {
+            enabled = false;
+            return;
+        }
 
         _gameInput = new GameInput();
         _gameInput.Enable();

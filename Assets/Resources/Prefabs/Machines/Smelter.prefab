@@ -1975,6 +1975,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f706562e85e1f418a457ea9dc31575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   _camera: {fileID: 0}
   _canvas: {fileID: 5308137708102847031}
   _textNamePlusLevel: {fileID: 7252709412626022646}

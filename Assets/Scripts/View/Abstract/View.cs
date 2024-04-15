@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using NaughtyAttributes;
 using Mirror;
 
-public abstract class View<T> : NetworkBehaviour
+public abstract class View<T> : MonoBehaviour
     where T : IMachine
 {
     [BoxGroup("Базовые параметры"), SerializeField] private Transform _camera;
