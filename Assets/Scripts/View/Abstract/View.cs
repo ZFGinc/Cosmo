@@ -2,8 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
+using Mirror;
 
-public abstract class View<T> : MonoBehaviour
+public abstract class View<T> : NetworkBehaviour
     where T : IMachine
 {
     [BoxGroup("Базовые параметры"), SerializeField] private Transform _camera;
@@ -15,8 +16,8 @@ public abstract class View<T> : MonoBehaviour
     [BoxGroup("Настройки View для предмета"), SerializeField] private TMP_Text _textItemName;
     [BoxGroup("Настройки View для предмета"), SerializeField] private Image _imageItemIcon;
 
+    [SyncVar] protected uint _electricity = 0;
     protected bool _enabledUI = false;
-    protected uint _electricity = 0;
 
     private float _speedEnableUI = 5f;
     private float _radiusShowUINearPlayer = 5f;
@@ -24,9 +25,9 @@ public abstract class View<T> : MonoBehaviour
     private Vector2 _minMaxSizeUI = Vector2.up;
     private RectTransform _rectTransformCanvas;
 
-    protected T _machine;
-    protected MachineInfo _machineInfo;
-    protected Item _itemInfo;
+    [SyncVar] protected T _machine;
+    [SyncVar] protected MachineInfo _machineInfo;
+    [SyncVar] protected Item _itemInfo;
 
     protected void Awake()
     {

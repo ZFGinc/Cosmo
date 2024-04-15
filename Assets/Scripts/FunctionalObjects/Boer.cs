@@ -1,3 +1,4 @@
+using Mirror;
 using NaughtyAttributes;
 using System;
 using System.Collections;
@@ -97,9 +98,12 @@ public class Boer : Miner
         CurrentItemsCount = count;
     }
 
-    private void SpawnNewItemAround()
+    [Command(requiresAuthority = false)]
+    private void CmdSpawnNewItemAround()
     {
-        var obj = Instantiate(MinedItemInfo.Prefab, _productionSpawnPoint.position, Quaternion.identity);
+        var obj = Instantiate(MinedItemInfo.Prefab, _productionSpawnPoint.position, Quaternion.identity).gameObject;
+
+        NetworkServer.Spawn(obj);
 
         if (!IsHasProductCopacity()) Destroy(obj.gameObject);
     }
@@ -184,7 +188,7 @@ public class Boer : Miner
                 break;
             }
 
-            SpawnNewItemAround();
+            CmdSpawnNewItemAround();
         }
 
         IsMiningStarted = false;

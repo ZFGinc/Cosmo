@@ -5,7 +5,7 @@ using UnityEngine;
 public class Character : MonoBehaviour, IControllable
 {
     [Header("Настройки управления")]
-    [SerializeField, Range(5,10)] private float _speedMovement = 5f;
+    [SerializeField, Range(1,10)] private float _speedMovement = 1f;
     [SerializeField, Range(1,5)] private float _jumpHeight = 3f;
     [Header("Поля для отслеживания косания с землей")]
     [SerializeField] private LayerMask _groundLayer;
@@ -19,7 +19,7 @@ public class Character : MonoBehaviour, IControllable
     private bool _isGrounded;
 
     private const float RADIUS_CHECKER = 0.4f;
-    private const float SPEED_ROTATION = 500f;
+    private const float SPEED_ROTATION = 100f;
 
     private void Awake()
     {
@@ -27,7 +27,7 @@ public class Character : MonoBehaviour, IControllable
         _pickUpController = GetComponent<PickUpController>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         _gravity = Physics.gravity.y;
         _isGrounded = IsOnTheGround();

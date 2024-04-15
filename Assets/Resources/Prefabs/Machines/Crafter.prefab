@@ -4034,6 +4034,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 389e7d41411cf704faf9c6ec1ac0b05c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   _pivotForCheckItems: {fileID: 4387121602251155072}
   _pivotForSpawnNewItem: {fileID: 2834962163120412189}
   _recipeUserInfo: {fileID: 11400000, guid: 481512af2282ffa4db8a9b46694ad064, type: 2}
@@ -4134,7 +4137,7 @@ MonoBehaviour:
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 1
-  coordinateSpace: 0
+  coordinateSpace: 1
   sendIntervalMultiplier: 1
   timelineOffset: 0
   showGizmos: 0

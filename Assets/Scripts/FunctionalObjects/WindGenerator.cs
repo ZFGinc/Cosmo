@@ -11,11 +11,10 @@ public class WindGenerator : ElecticGenerator
         base.Start();
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         if (IsWorking && IsHasProductCopacity()) 
             _rotationVisualMined.Rotate(_vectorRotationVisual);
-
     }
 
     protected new void FixedUpdate()

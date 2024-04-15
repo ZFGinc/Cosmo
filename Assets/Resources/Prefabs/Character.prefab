@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4645d14fbb456b943a0f9a01af91c76b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedMovement: 5
+  _speedMovement: 1
   _jumpHeight: 2
   _groundLayer:
     serializedVersion: 2
@@ -268,7 +268,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  _cameraFollower: {fileID: 2463377059186786535}
+  _cameraFollower: {fileID: 8741431059392382953}
   _zoomMultiply: 1
 --- !u!114 &5182869406497262499
 MonoBehaviour:
@@ -571,7 +571,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5909431391406012074}
-  - component: {fileID: 2463377059186786535}
+  - component: {fileID: 8741431059392382953}
   m_Layer: 3
   m_Name: Camera movement
   m_TagString: Untagged
@@ -595,7 +595,7 @@ Transform:
   - {fileID: 4988394242968063386}
   m_Father: {fileID: 891589318988413400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2463377059186786535
+--- !u!114 &8741431059392382953
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -604,7 +604,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7851578760958562777}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2455298ca4e5e2940bbbc996bb50d3b4, type: 3}
+  m_Script: {fileID: 11500000, guid: 40118134570652549a5317d3ef75b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 891589318988413400}

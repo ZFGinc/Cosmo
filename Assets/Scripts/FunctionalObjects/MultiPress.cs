@@ -78,7 +78,7 @@ public class MultiPress : UsingRecipes, IActionObject
 
         for (int i = 0; i < _currentRecipe.CountProductedItems; i++)
         {
-            Instantiate(_currentRecipe.Item.Prefab, PivotForSpawnNewItem.position, Quaternion.identity);
+            SpawnNewItem();
         }
 
         foreach(ItemObject itemObject in _itemObjects)

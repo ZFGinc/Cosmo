@@ -1244,6 +1244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ac02323989e7c24fa07acdc808919a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   _pivotForCheckItems: {fileID: 1439543640181681610}
   _pivotForSpawnNewItem: {fileID: 3908508625025558802}
   _recipeUserInfo: {fileID: 11400000, guid: 0b7d4c58ee3e358489ca340f5a1ed374, type: 2}
@@ -1316,7 +1319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 0
-  _assetId: 0
+  _assetId: 3635126614
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
@@ -1344,7 +1347,7 @@ MonoBehaviour:
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 1
-  coordinateSpace: 0
+  coordinateSpace: 1
   sendIntervalMultiplier: 1
   timelineOffset: 0
   showGizmos: 0

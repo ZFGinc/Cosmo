@@ -406,6 +406,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 986914f1797bad1469d5d12bb5e81e30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   _minerInfo: {fileID: 11400000, guid: 6448ef7eeb4e3de4eb15a28ac940d1f8, type: 2}
   _decalProjector: {fileID: 0}
   _isMined: 0
@@ -473,7 +476,7 @@ MonoBehaviour:
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 1
-  coordinateSpace: 0
+  coordinateSpace: 1
   sendIntervalMultiplier: 1
   timelineOffset: 0
   showGizmos: 0

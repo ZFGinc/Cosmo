@@ -1,3 +1,4 @@
+using Mirror;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -13,7 +14,7 @@ public abstract class Miner : ElectricityConsumer, IMachine
     [Space]
     [SerializeField] protected DecalProjector _decalProjector;
     [Space]
-    [SerializeField] private bool _isMined;
+    [SyncVar, SerializeField] private bool _isMined;
     [SerializeField] private uint _currentItemsCount;
     [SerializeField] private MinedItemType _minedItemType = MinedItemType.Null;
 
