@@ -10,7 +10,7 @@ public abstract class Miner : ElectricityConsumer, IMachine
     public virtual event Action<MachineInfo, MinedItem, uint> UpdateView;
     public virtual event Action<uint, uint> UpdateElectricityView;
 
-    [SerializeField] private MinerInfo _minerInfo;
+    [SyncVar, SerializeField] private MinerInfo _minerInfo;
     [Space]
     [SerializeField] protected DecalProjector _decalProjector;
     [Space]

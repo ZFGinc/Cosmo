@@ -16,18 +16,17 @@ public abstract class View<T> : NetworkBehaviour
     [BoxGroup("Настройки View для предмета"), SerializeField] private TMP_Text _textItemName;
     [BoxGroup("Настройки View для предмета"), SerializeField] private Image _imageItemIcon;
 
-    [SyncVar] protected uint _electricity = 0;
+    protected uint _electricity = 0;
     protected bool _enabledUI = false;
 
     private float _speedEnableUI = 5f;
     private float _radiusShowUINearPlayer = 5f;
 
-    private Vector2 _minMaxSizeUI = Vector2.up;
     private RectTransform _rectTransformCanvas;
 
-    [SyncVar] protected T _machine;
-    [SyncVar] protected MachineInfo _machineInfo;
-    [SyncVar] protected Item _itemInfo;
+    protected T _machine;
+    protected MachineInfo _machineInfo;
+    protected Item _itemInfo;
 
     protected void Awake()
     {

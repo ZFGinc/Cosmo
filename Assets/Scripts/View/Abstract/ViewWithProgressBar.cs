@@ -10,8 +10,8 @@ public abstract class ViewWithProgressBar<T> : View<T>
     [BoxGroup("Параметры градиента"), SerializeField] protected Slider _progressBar;
     [BoxGroup("Параметры градиента"), SerializeField] protected Image _fillAreaImage;
 
-    [SyncVar] protected float _currentProgress = 0;
-    [SyncVar] protected float _maxProgress = 1;
+    protected float _currentProgress = 0;
+    protected float _maxProgress = 1;
 
     protected override void FixedUpdate()
     {

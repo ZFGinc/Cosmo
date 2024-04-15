@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class UIActionController: MonoBehaviour
 {
     [SerializeField] private SteamLobby _steamLobby;
-    [SerializeField] private GameObject _cameraMenu;
     [Space(10)]
     [SerializeField, Required] private Canvas _menuCanvas;
     [SerializeField, Required] private Canvas _debugCanvas;
@@ -98,7 +97,6 @@ public class UIActionController: MonoBehaviour
     public void HostGame()
     {
         _steamLobby.HostLobby();
-        _cameraMenu.SetActive(false);
     }
 
     public void ConnectToGame()
@@ -109,7 +107,6 @@ public class UIActionController: MonoBehaviour
     public void DisconectGame()
     {
         _steamLobby.LeaveLobby();
-        _cameraMenu.SetActive(true);
     }
 
     public void ExitGame()

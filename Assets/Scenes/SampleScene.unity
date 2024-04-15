@@ -43276,7 +43276,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _steamLobby: {fileID: 427889573}
-  _cameraMenu: {fileID: 0}
   _menuCanvas: {fileID: 790485701069437203}
   _debugCanvas: {fileID: 1381264246}
 --- !u!1 &1905580787
