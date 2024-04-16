@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7680607700833358141}
   - component: {fileID: 727017273326754991}
   - component: {fileID: -7506130965106780158}
+  - component: {fileID: -1510480208834960622}
   m_Layer: 0
   m_Name: IronOrePrefab
   m_TagString: Item
@@ -149,8 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52809f2bb208a7b41a540fe75e6e07f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 1
-  syncMode: 0
+  syncDirection: 0
+  syncMode: 1
   syncInterval: 0
   _isCanPush: 1
   <IsCanPickup>k__BackingField: 1
@@ -196,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 1
+  syncDirection: 0
   syncMode: 1
   syncInterval: 0
   target: {fileID: 7831886755866440574}
@@ -208,7 +209,41 @@ MonoBehaviour:
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 0
-  coordinateSpace: 0
+  coordinateSpace: 1
+  sendIntervalMultiplier: 1
+  timelineOffset: 0
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  onlySyncOnChangeCorrectionMultiplier: 2
+  rotationSensitivity: 0.01
+  positionPrecision: 0.01
+  scalePrecision: 0.01
+--- !u!114 &-1510480208834960622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6483821503697656218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 1
+  syncInterval: 0
+  target: {fileID: 7831886755866440574}
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  onlySyncOnChange: 1
+  compressRotation: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  coordinateSpace: 1
   sendIntervalMultiplier: 1
   timelineOffset: 0
   showGizmos: 0

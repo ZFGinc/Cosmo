@@ -135,7 +135,7 @@ public abstract class UsingRecipes : ElectricityConsumer, IMachine
         if (_items.Count == 0) TryStop();
     }
 
-    [Command(requiresAuthority = false)]
+    [Command(requiresAuthority = true)]
     protected virtual void SpawnNewItem()
     {
         var obj = Instantiate(_currentRecipe.Item.Prefab, PivotForSpawnNewItem.position, Quaternion.identity).gameObject;

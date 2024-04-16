@@ -3912,6 +3912,7 @@ GameObject:
   - component: {fileID: 61604936425527087}
   - component: {fileID: 5001141571809594779}
   - component: {fileID: 9061327763672811951}
+  - component: {fileID: 7110166944726984036}
   m_Layer: 0
   m_Name: Crafter
   m_TagString: Untagged
@@ -4037,7 +4038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 389e7d41411cf704faf9c6ec1ac0b05c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 1
+  syncDirection: 0
   syncMode: 1
   syncInterval: 0
   _pivotForCheckItems: {fileID: 4387121602251155072}
@@ -4141,7 +4142,41 @@ MonoBehaviour:
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 1
-  coordinateSpace: 0
+  coordinateSpace: 1
+  sendIntervalMultiplier: 1
+  timelineOffset: 0
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  onlySyncOnChangeCorrectionMultiplier: 2
+  rotationSensitivity: 0.01
+  positionPrecision: 0.01
+  scalePrecision: 0.01
+--- !u!114 &7110166944726984036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3766836997200533027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 8856640556784590658}
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  onlySyncOnChange: 1
+  compressRotation: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  coordinateSpace: 1
   sendIntervalMultiplier: 1
   timelineOffset: 0
   showGizmos: 0

@@ -1851,6 +1851,7 @@ GameObject:
   - component: {fileID: 2169751330970730653}
   - component: {fileID: 4253139097372472739}
   - component: {fileID: 7879610646488318204}
+  - component: {fileID: 9149860693374774956}
   m_Layer: 0
   m_Name: Smelter
   m_TagString: Untagged
@@ -2058,7 +2059,7 @@ MonoBehaviour:
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 1
-  coordinateSpace: 0
+  coordinateSpace: 1
   sendIntervalMultiplier: 1
   timelineOffset: 0
   showGizmos: 0
@@ -2085,6 +2086,40 @@ MonoBehaviour:
   syncInterval: 0
   clientAuthority: 0
   animator: {fileID: 3998046608900465861}
+--- !u!114 &9149860693374774956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5855197862874897964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 3917122800427429855}
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  onlySyncOnChange: 1
+  compressRotation: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  coordinateSpace: 1
+  sendIntervalMultiplier: 1
+  timelineOffset: 0
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  onlySyncOnChangeCorrectionMultiplier: 2
+  rotationSensitivity: 0.01
+  positionPrecision: 0.01
+  scalePrecision: 0.01
 --- !u!1 &6517997374086714615
 GameObject:
   m_ObjectHideFlags: 0

@@ -308,6 +308,7 @@ GameObject:
   - component: {fileID: 4009410639514142737}
   - component: {fileID: 2412998133240310979}
   - component: {fileID: 7639330951272591191}
+  - component: {fileID: -7942460177379517598}
   m_Layer: 0
   m_Name: WindGenerator
   m_TagString: Untagged
@@ -479,7 +480,41 @@ MonoBehaviour:
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 1
-  coordinateSpace: 0
+  coordinateSpace: 1
+  sendIntervalMultiplier: 1
+  timelineOffset: 0
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  onlySyncOnChangeCorrectionMultiplier: 2
+  rotationSensitivity: 0.01
+  positionPrecision: 0.01
+  scalePrecision: 0.01
+--- !u!114 &-7942460177379517598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3261241012542383787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 7549491241735862718}
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  onlySyncOnChange: 1
+  compressRotation: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  coordinateSpace: 1
   sendIntervalMultiplier: 1
   timelineOffset: 0
   showGizmos: 0
