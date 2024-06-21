@@ -1,12 +1,11 @@
-using Mirror;
 using UnityEngine;
 
 [SelectionBase]
-public abstract class ElectricityConsumer : NetworkBehaviour, IConsumer
+public abstract class ElectricityConsumer : MonoBehaviour, IConsumer
 {
-    [SyncVar] private uint _electricityCopacity = 10;
+    private uint _electricityCopacity = 10;
 
-    [SyncVar] protected uint _electricity;
+    protected uint _electricity;
 
     protected bool IsHaveElectricity => _electricity > 0;
     protected bool IsElectricityFull => _electricity >= _electricityCopacity;

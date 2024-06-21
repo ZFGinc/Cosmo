@@ -1,11 +1,10 @@
-﻿using Mirror;
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(IControllable))]
 [RequireComponent(typeof(IActionController))]
-public class CharacterInputController: NetworkBehaviour
+public class CharacterInputController: MonoBehaviour
 {
     [SerializeField] private CameraFollower _cameraFollower;
     [SerializeField] private float _zoomMultiply = 10; 
@@ -17,20 +16,15 @@ public class CharacterInputController: NetworkBehaviour
     private float _currentAngle = 0;
     private float _stepAngle = 45f;
 
-    private bool _isLocalPlayer = false;
-
     private void Start()
     {
-        _isLocalPlayer = isLocalPlayer;
-
         Initialize();
         SubscripbeInputActions();
     }
 
     private void Update()
     {
-        if (!_isLocalPlayer) return;
-        
+
         ReadMovement();
         ReadCameraZoom();
 
@@ -51,29 +45,23 @@ public class CharacterInputController: NetworkBehaviour
 
     private void Initialize()
     {
-        if (!_isLocalPlayer)
-        {
-            enabled = false;
-            return;
-        }
-
         _gameInput = new GameInput();
         _gameInput.Enable();
 
         _controllable = GetComponent<IControllable>();
         _actionConntroller = GetComponent<IActionController>();
 
-        _cameraFollower.gameObject.SetActive(true);
-
-        if (_controllable == null)
+        if (_actionConntroller == null || _controllable == null)
         {
             throw new Exception("Чет какая-то хуйня получается");
         }
+
+        _cameraFollower.gameObject.SetActive(true);
     }
 
     private void ReadMovement()
     {
-        var inputDirection = _gameInput.Gameplay.Movement.ReadValue<Vector2>();
+        Vector2 inputDirection = _gameInput.Gameplay.Movement.ReadValue<Vector2>();
         inputDirection = RotateVector2(inputDirection, -_currentAngle);
 
         Vector3 direction = new Vector3(inputDirection.x, 0, inputDirection.y);
@@ -107,8 +95,6 @@ public class CharacterInputController: NetworkBehaviour
 
     private void SubscripbeInputActions()
     {
-        if (!_isLocalPlayer) return;
-     
         _gameInput.Gameplay.Jump.performed += OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed += OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed += OnActionPerformed;
@@ -119,8 +105,6 @@ public class CharacterInputController: NetworkBehaviour
 
     private void UnscripbeInputActions()
     {
-        if (!_isLocalPlayer) return;
-
         _gameInput.Gameplay.Jump.performed -= OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed -= OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed -= OnActionPerformed;

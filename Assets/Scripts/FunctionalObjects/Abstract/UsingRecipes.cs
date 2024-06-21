@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
-using Mirror;
 
 [RequireComponent(typeof(PickableObject))]
 public abstract class UsingRecipes : ElectricityConsumer, IMachine
@@ -11,7 +10,7 @@ public abstract class UsingRecipes : ElectricityConsumer, IMachine
     [Foldout("Позиции"), SerializeField] private Transform _pivotForCheckItems;
     [Foldout("Позиции"), SerializeField] private Transform _pivotForSpawnNewItem;
     [Space]
-    [Foldout("Инфа о данном приборе"), SerializeField, Expandable, SyncVar] private RecipeUserInfo _recipeUserInfo = null;
+    [Foldout("Инфа о данном приборе"), SerializeField, Expandable] private RecipeUserInfo _recipeUserInfo = null;
     [Foldout("Инфа о данном приборе"), SerializeField] private TypeRecipeUser _recipeUser;
     [Space]
     [Foldout("Настройки области для предметов"), SerializeField] private Vector3 _sizeCubeForCheckItems;
@@ -21,7 +20,7 @@ public abstract class UsingRecipes : ElectricityConsumer, IMachine
     protected Transform PivotForSpawnNewItem => _pivotForSpawnNewItem;
     protected MachineInfo RecipeUserInfo => _recipeUserInfo;
 
-    [SyncVar] private bool _isWorking = false;  
+    private bool _isWorking = false;  
     [HideInInspector] public bool IsWorking { get => _isWorking; protected set => _isWorking = value; }
 
     public abstract event Action<MachineInfo, Item, uint> OnUpdateView;
@@ -135,11 +134,9 @@ public abstract class UsingRecipes : ElectricityConsumer, IMachine
         if (_items.Count == 0) TryStop();
     }
 
-    [Command(requiresAuthority = true)]
     protected virtual void SpawnNewItem()
     {
-        var obj = Instantiate(_currentRecipe.Item.Prefab, PivotForSpawnNewItem.position, Quaternion.identity).gameObject;
-        NetworkServer.Spawn(obj);
+        Instantiate(_currentRecipe.Item.Prefab, PivotForSpawnNewItem.position, Quaternion.identity);
     }
     protected virtual void LockItems()
     {

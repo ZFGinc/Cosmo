@@ -1,4 +1,3 @@
-using Mirror;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -10,11 +9,11 @@ public abstract class Miner : ElectricityConsumer, IMachine
     public virtual event Action<MachineInfo, MinedItem, uint> UpdateView;
     public virtual event Action<uint, uint> UpdateElectricityView;
 
-    [SyncVar, SerializeField] private MinerInfo _minerInfo;
+    [SerializeField] private MinerInfo _minerInfo;
     [Space]
     [SerializeField] protected DecalProjector _decalProjector;
     [Space]
-    [SyncVar, SerializeField] private bool _isMined;
+    [SerializeField] private bool _isMined;
     [SerializeField] private uint _currentItemsCount;
     [SerializeField] private MinedItemType _minedItemType = MinedItemType.Null;
 

@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
-using Mirror;
 
 public abstract class View<T> : MonoBehaviour
     where T : IMachine

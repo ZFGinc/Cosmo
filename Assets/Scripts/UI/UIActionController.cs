@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class UIActionController: MonoBehaviour
 {
-    [SerializeField] private SteamLobby _steamLobby;
+    //[SerializeField] private SteamLobby _steamLobby;
     [Space(10)]
     [SerializeField, Required] private Canvas _menuCanvas;
     [SerializeField, Required] private Canvas _debugCanvas;
@@ -96,22 +96,22 @@ public class UIActionController: MonoBehaviour
 
     public void HostGame()
     {
-        _steamLobby.HostLobby();
+        //_steamLobby.HostLobby();
     }
 
     public void ConnectToGame()
     {
-        _steamLobby.ConnectToFriend();
+        //_steamLobby.ConnectToFriend();
     }
 
     public void DisconectGame()
     {
-        _steamLobby.LeaveLobby();
+        //_steamLobby.LeaveLobby();
     }
 
     public void ExitGame()
     {
-        _steamLobby.LeaveLobby();
+        //_steamLobby.LeaveLobby();
         Application.Quit();
     }
 }

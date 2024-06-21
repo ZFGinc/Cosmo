@@ -25,11 +25,11 @@ public class Character : MonoBehaviour, IControllable
     {
         _characterController = GetComponent<CharacterController>();
         _pickUpController = GetComponent<PickUpController>();
+        _gravity = Physics.gravity.y;
     }
 
     private void FixedUpdate()
     {
-        _gravity = Physics.gravity.y;
         _isGrounded = IsOnTheGround();
 
         if (_isGrounded && _velocity < 0f) _velocity = -1f;
