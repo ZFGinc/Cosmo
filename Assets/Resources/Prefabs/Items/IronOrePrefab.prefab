@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7831886755866440574}
   - component: {fileID: 7219437302379343404}
   - component: {fileID: 91545464531363272}
-  - component: {fileID: 1035679103668555841}
+  - component: {fileID: 2213828882125922944}
   - component: {fileID: 2403262283975548908}
   - component: {fileID: 4461597861899716333}
   - component: {fileID: 7680607700833358141}
@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6483821503697656218}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -3733131142868467153, guid: 887a6bb53672d5344adf94a35ccd01ed, type: 3}
 --- !u!23 &91545464531363272
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ff0e592f08455dc4a9e2b6d197f110cf, type: 2}
+  - {fileID: 2100000, guid: 5624dc817c2758847a995f792773467b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,8 +87,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &1035679103668555841
-SphereCollider:
+--- !u!64 &2213828882125922944
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -105,9 +105,10 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3733131142868467153, guid: 887a6bb53672d5344adf94a35ccd01ed, type: 3}
 --- !u!54 &2403262283975548908
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -147,9 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52809f2bb208a7b41a540fe75e6e07f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 1
-  syncInterval: 0
   _isCanPush: 1
   <IsCanPickup>k__BackingField: 1
 --- !u!114 &7680607700833358141

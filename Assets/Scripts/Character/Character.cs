@@ -2,21 +2,29 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PickUpController))]
-public class Character : MonoBehaviour, IControllable
+public class Character : MonoBehaviour, IControllable, IPortable
 {
     [Header("Настройки управления")]
     [SerializeField, Range(1,10)] private float _speedMovement = 5f;
     [SerializeField, Range(1,5)] private float _jumpHeight = 3f;
+    [SerializeField, Range(0f, 1f)] private float _slideFriction = 0.5f;
     [Header("Поля для отслеживания косания с землей")]
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private Transform _groundCheckerPivot;
+    [Header("Скин с анимацией игрока")]
+    [SerializeField] private Animator _skinWithanimator;
 
     private CharacterController _characterController;
     private PickUpController _pickUpController;
+
     private Vector3 _moveDirection;
+    private Vector3 _hitNormal;
+
     private float _velocity;
     private float _gravity;
+
     private bool _isGrounded;
+    private bool _isSlopeAngle;
 
     private const float RADIUS_CHECKER = 0.4f;
     private const float SPEED_ROTATION = 500f;
@@ -28,15 +36,27 @@ public class Character : MonoBehaviour, IControllable
         _gravity = Physics.gravity.y;
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(_groundCheckerPivot.position, RADIUS_CHECKER);
+    }
+
     private void FixedUpdate()
     {
         _isGrounded = IsOnTheGround();
-
-        if (_isGrounded && _velocity < 0f) _velocity = -1f;
+        _isSlopeAngle = IsSlopeAngle();
+        _skinWithanimator.SetBool("isGrounded", _isGrounded);
+        _skinWithanimator.SetBool("isGrab", _pickUpController.IsPickableObject);
 
         MoveInternal();
         RotateInternal();
         Gravity();
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        _hitNormal = hit.normal;
     }
 
     private void RotateInternal()
@@ -50,7 +70,17 @@ public class Character : MonoBehaviour, IControllable
 
     private void MoveInternal()
     {
+        //Скольжение по отвеным поверхностям
+        if (_isSlopeAngle)
+        {
+            _moveDirection.x += (1f - _hitNormal.y) * _hitNormal.x * _slideFriction;
+            _moveDirection.z += (1f - _hitNormal.y) * _hitNormal.z * _slideFriction;
+        }
+
         _characterController.Move(_moveDirection * _speedMovement * Time.fixedDeltaTime);
+
+        _skinWithanimator.SetFloat("moveX", _moveDirection.x);
+        _skinWithanimator.SetFloat("moveZ", _moveDirection.z);
     }
 
     private void Gravity()
@@ -59,10 +89,15 @@ public class Character : MonoBehaviour, IControllable
 
         _characterController.Move(Vector3.up * _velocity * Time.fixedDeltaTime);
     }
-
+    
     private bool IsOnTheGround()
     {
         return Physics.CheckSphere(_groundCheckerPivot.position, RADIUS_CHECKER, _groundLayer);
+    }
+
+    private bool IsSlopeAngle()
+    {
+        return Vector3.Angle(Vector3.up, _hitNormal) >= _characterController.slopeLimit;
     }
 
     public void Move(Vector3 direction)
@@ -75,10 +110,18 @@ public class Character : MonoBehaviour, IControllable
         if (!_isGrounded) return;
 
         _velocity = Mathf.Sqrt(_jumpHeight * -2 * _gravity);
+        _skinWithanimator.SetTrigger("jump");
     }
 
     public void PickUp()
     {
         _pickUpController.TryPickUpObject();
+    }
+
+    public void TeleportTo(Vector3 globalPosition)
+    {
+        _characterController.enabled = false;
+        transform.position = globalPosition;
+        _characterController.enabled = true;
     }
 }

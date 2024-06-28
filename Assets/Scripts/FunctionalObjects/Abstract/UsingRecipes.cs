@@ -75,19 +75,23 @@ public abstract class UsingRecipes : ElectricityConsumer, IMachine
             float newxPosition = startPosition + distanceBetweetItems * (i + 1);
             Vector3 newPosition = new Vector3(newxPosition, PivotForCheckItems.position.y, PivotForCheckItems.position.z);
 
+            newPosition = GetNewVectorAroundPointY(newPosition, PivotForCheckItems.position, transform.rotation.eulerAngles.y);
+
             _itemObjects[i].transform.position = Vector3.Lerp(_itemObjects[i].transform.position, newPosition, Time.deltaTime * 4f);
-            _itemObjects[i].transform.rotation = Quaternion.identity;
+            _itemObjects[i].transform.rotation = PivotForCheckItems.rotation;
         }
     }
+
     private void UpdateCurrentRecipe()
     {
         _currentRecipe = LoaderItemsFromResources.Instance.GetRecipeByNeedItems(_items, _recipeUser);
     }
+
     private void CheckItems()
     {
         if (_pickableObject.IsHold || IsWorking) return;
 
-        Collider[] hitColliders = Physics.OverlapBox(PivotForCheckItems.position, _sizeCubeForCheckItems);
+        Collider[] hitColliders = Physics.OverlapBox(PivotForCheckItems.position, _sizeCubeForCheckItems, transform.rotation);
         List<ItemObject> itemObjects = new();
 
         foreach (Collider collider in hitColliders)
@@ -134,18 +138,31 @@ public abstract class UsingRecipes : ElectricityConsumer, IMachine
         if (_items.Count == 0) TryStop();
     }
 
+    private Vector3 GetNewVectorAroundPointY(Vector3 point, Vector3 center, float alpha)
+    {
+        alpha = alpha-90;
+
+        float X = (point.x - center.x) * Mathf.Cos(alpha) - (point.z - center.z) * Mathf.Sin(alpha) + point.x;
+        float Z = (point.x - center.x) * Mathf.Sin(alpha) + (point.z - center.z) * Mathf.Cos(alpha) + point.z;
+
+        return new Vector3(X, point.y, Z);
+    }
+
     protected virtual void SpawnNewItem()
     {
         Instantiate(_currentRecipe.Item.Prefab, PivotForSpawnNewItem.position, Quaternion.identity);
     }
+
     protected virtual void LockItems()
     {
         foreach (var item in _itemObjects)
         {
             item.DisableCanPickUp();
+            item.ControllCollisionDetect();
             item.transform.parent = transform;
         }
     }
+
     protected bool IsAllObjectNotHold()
     {
         foreach (var item in _itemObjects)

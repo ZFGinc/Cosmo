@@ -13,11 +13,11 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
-  - 
-  - 
-  - 
+  - OutOfBounds
+  - Item
+  - Ore
+  - Miner
+  - Plant
   - 
   - 
   - 

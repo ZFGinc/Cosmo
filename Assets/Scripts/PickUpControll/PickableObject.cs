@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PickableObject : MonoBehaviour, IPickable, IPushObject
+public class PickableObject : MonoBehaviour, IPickable, IPushObject, IPortable
 {
     [SerializeField] private bool _isCanPush = false;
 
@@ -84,5 +84,16 @@ public class PickableObject : MonoBehaviour, IPickable, IPushObject
     }
 
     public GameObject This() => this.gameObject;
+
+    public void TeleportTo(Vector3 globalPosition)
+    {
+        _rigidBody.velocity = Vector3.zero;
+        transform.position = globalPosition;
+    }
+
+    public void Action()
+    {
+        throw new System.NotImplementedException();
+    }
 }
 

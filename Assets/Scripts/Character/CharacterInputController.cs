@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NaughtyAttributes;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,29 +7,25 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(IActionController))]
 public class CharacterInputController: MonoBehaviour
 {
-    [SerializeField] private CameraFollower _cameraFollower;
-    [SerializeField] private float _zoomMultiply = 10; 
+    [SerializeField] private Transform _cameraTransfrom;
+    [SerializeField] private Transform _orientation;
 
     private GameInput _gameInput;
     private IControllable _controllable;
     private IActionController _actionConntroller;
 
-    private float _currentAngle = 0;
-    private float _stepAngle = 45f;
-
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         Initialize();
         SubscripbeInputActions();
     }
 
     private void Update()
     {
-
         ReadMovement();
-        ReadCameraZoom();
-
-        RotateCamera();
     }
 
     private Vector2 RotateVector2(Vector2 v, float delta)
@@ -55,32 +52,17 @@ public class CharacterInputController: MonoBehaviour
         {
             throw new Exception("Чет какая-то хуйня получается");
         }
-
-        _cameraFollower.gameObject.SetActive(true);
     }
 
     private void ReadMovement()
     {
         Vector2 inputDirection = _gameInput.Gameplay.Movement.ReadValue<Vector2>();
-        inputDirection = RotateVector2(inputDirection, -_currentAngle);
+        _orientation.forward = (transform.position - _cameraTransfrom.position).normalized;
 
-        Vector3 direction = new Vector3(inputDirection.x, 0, inputDirection.y);
+        Vector3 tempDirection = inputDirection.y * _orientation.forward + inputDirection.x * _orientation.right;
+        Vector3 direction = new Vector3(tempDirection.x, 0, tempDirection.z);
 
         _controllable.Move(direction);
-    }
-
-    private void ReadCameraZoom()
-    {
-        if (_cameraFollower == null) return;
-
-        var inputZoom = _gameInput.Gameplay.CameraZoom.ReadValue<float>();
-
-        _cameraFollower.ApplyZoomScale(inputZoom/(1000/_zoomMultiply));
-    }
-
-    private void RotateCamera()
-    {
-        _cameraFollower.transform.rotation = Quaternion.Lerp(_cameraFollower.transform.rotation, Quaternion.Euler(0, _currentAngle, 0), Time.deltaTime * 5);
     }
 
     private void OnDestroy()
@@ -98,9 +80,6 @@ public class CharacterInputController: MonoBehaviour
         _gameInput.Gameplay.Jump.performed += OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed += OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed += OnActionPerformed;
-
-        _gameInput.Gameplay.CameraRotateLeft.performed += OnCameraRotateLeftPerformed;
-        _gameInput.Gameplay.CameraRotateRight.performed += OnCameraRotateRightPerformed;
     }
 
     private void UnscripbeInputActions()
@@ -108,9 +87,6 @@ public class CharacterInputController: MonoBehaviour
         _gameInput.Gameplay.Jump.performed -= OnJumpPerformed;
         _gameInput.Gameplay.PickUp.performed -= OnPickUpPerformed;
         _gameInput.Gameplay.Action.performed -= OnActionPerformed;
-
-        _gameInput.Gameplay.CameraRotateLeft.performed -= OnCameraRotateLeftPerformed;
-        _gameInput.Gameplay.CameraRotateRight.performed -= OnCameraRotateRightPerformed;
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext obj)
@@ -126,24 +102,6 @@ public class CharacterInputController: MonoBehaviour
     private void OnActionPerformed(InputAction.CallbackContext obj)
     {
         _actionConntroller.Action();
-    }
-
-    private void OnCameraRotateLeftPerformed(InputAction.CallbackContext obj)
-    {
-        _currentAngle -= _stepAngle;
-        CorrectCurrentAngle();
-    }
-
-    private void OnCameraRotateRightPerformed(InputAction.CallbackContext obj)
-    {
-        _currentAngle += _stepAngle;
-        CorrectCurrentAngle();
-    }
-
-    private void CorrectCurrentAngle()
-    {
-        if (_currentAngle > 180) _currentAngle -= 360;
-        if (_currentAngle < -180) _currentAngle += 360;
     }
 }
 

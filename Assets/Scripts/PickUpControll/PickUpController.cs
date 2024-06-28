@@ -8,6 +8,8 @@ public class PickUpController: MonoBehaviour
 
     private IPickable _pickableObject;
 
+    public bool IsPickableObject => _pickableObject != null;
+
     public void TryPickUpObject(bool isAction = false)
     {
         if (_pickableObject != null || isAction) DropObject();

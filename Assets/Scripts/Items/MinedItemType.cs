@@ -3,6 +3,7 @@
     Null = 0,
     Electricity,
     IronOre,
-    GoldOre
+    GoldOre,
+    MalahitOre
 }
 

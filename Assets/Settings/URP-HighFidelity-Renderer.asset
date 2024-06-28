@@ -16,10 +16,10 @@ MonoBehaviour:
   renderPassEvent: 350
   outlinesLayerMask:
     serializedVersion: 2
-    m_Bits: 9
+    m_Bits: 1865
   outlineSettings:
     outlineColor: {r: 0, g: 0, b: 0, a: 0.8627451}
-    outlineScale: 1.5
+    outlineScale: 1
     depthThreshold: 75
     robertsCrossMultiplier: 500
     normalThreshold: 0.4
@@ -29,9 +29,9 @@ MonoBehaviour:
     depthBufferBits: 0
     filterMode: 0
     backgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    perObjectData: 0
-    enableDynamicBatching: 0
-    enableInstancing: 0
+    perObjectData: -1
+    enableDynamicBatching: 1
+    enableInstancing: 1
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
